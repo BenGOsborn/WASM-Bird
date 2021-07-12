@@ -1,18 +1,25 @@
 import express from "express";
+import session from "express-session";
 
+// Initialize the app and add middleware
 const app = express();
+app.use(express.static(__dirname + "/static"));
+app.use(
+    session({
+        secret: process.env.SECRET || "secret",
+        resave: false,
+        saveUninitialized: false,
+    })
+);
 
-// Serve static content
-app.use("/", express.static(__dirname + "/static"));
+app.get("*", async (req, res) => {
+    // @ts-ignore
+    req.session.viewCount += 1;
 
-// Return different WASM depending on the URL
-app.get("/:bin", async (req, res) => {
-    // Get the name of the binary file to serve
-    const bin = req.params.bin;
+    // .... Authentication / session logic
 
-    // Now what I am going to do is split up the different apps into their own different folders
-    // This way I can serve each app indepdently statically without any other configuration
-    // Each app gets its own folder in the static path (or is fetched and loaded into that path for GCloud integration)
+    // Return the file with the scripts
+    res.sendFile(__dirname + "/index.html");
 });
 
 // Set the port and listen on it

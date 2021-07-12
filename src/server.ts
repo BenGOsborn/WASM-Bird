@@ -6,9 +6,9 @@ const app = express();
 app.use("/", express.static(__dirname + "/static"));
 
 // Return different WASM depending on the URL
-app.get("/:wasm_name", async (req, res) => {
-    // Get the name of the path
-    const wasmName = req.params.wasm_name;
+app.get("/:bin", async (req, res) => {
+    // Get the name of the binary file to serve
+    const bin = req.params.bin;
 
     // Now I need to serve the correct WASM file off of the same javascript if possible ?
     // Could I do this using some sort of dynamic bundler ?

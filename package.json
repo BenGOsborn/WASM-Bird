@@ -1,0 +1,7 @@
+{
+    "name": "wasm-bird",
+    "version": "1.0.0",
+    "scripts": {
+        "dev": "tsc --watch nodemon server.ts"
+    }
+}

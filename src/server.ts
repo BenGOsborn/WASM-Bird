@@ -10,10 +10,9 @@ app.get("/:bin", async (req, res) => {
     // Get the name of the binary file to serve
     const bin = req.params.bin;
 
-    // Now I need to serve the correct WASM file off of the same javascript if possible ?
-    // Could I do this using some sort of dynamic bundler ?
-
-    // I can probably just use EJS and set the required file to "fetch"
+    // Now what I am going to do is split up the different apps into their own different folders
+    // This way I can serve each app indepdently statically without any other configuration
+    // Each app gets its own folder in the static path (or is fetched and loaded into that path for GCloud integration)
 });
 
 // Set the port and listen on it

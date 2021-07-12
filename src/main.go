@@ -1,12 +1,18 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+)
 
 func main() {
-	i, j := 42, 27;
+    var arr [20][5]int;
 
-	p := &i;
+    for i := 0; i < len(arr); i++ {
+        for j := 0; j < len(arr[0]); j++ {
+            arr[i][j] = rand.Int() % 20;
+        }
+    }
 
-	fmt.Println(*p);
-	fmt.Println(j);
+	fmt.Println(arr);
 }

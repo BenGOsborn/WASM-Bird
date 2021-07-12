@@ -2,17 +2,16 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
 )
 
+func inc(x *int) {
+    *x++;
+}
+
 func main() {
-    var arr [20][5]int;
+    y := 3;
 
-    for i := 0; i < len(arr); i++ {
-        for j := 0; j < len(arr[0]); j++ {
-            arr[i][j] = rand.Int() % 20;
-        }
-    }
+    inc(&y);
 
-	fmt.Println(arr);
+    fmt.Println(y);
 }

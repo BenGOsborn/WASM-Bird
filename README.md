@@ -5,3 +5,4 @@ A flappy bird game created using Golang, WASM, and JavaScript.
  - Golang
  - NodeJS + TypeScript
  - WASM
+ - Docker

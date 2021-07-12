@@ -11,9 +11,11 @@
             WebAssembly.instantiateStreaming(
                 fetch("main.wasm"),
                 go.importObject
-            ).then((res) => go.run(result.instance));
+            ).then((result) => go.run(result.instance));
         </script>
         <title>Document</title>
     </head>
-    <body></body>
+    <body>
+        <h1>Hello there!</h1>
+    </body>
 </html>

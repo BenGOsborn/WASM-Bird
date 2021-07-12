@@ -12,6 +12,8 @@ app.get("/:wasm_name", async (req, res) => {
 
     // Now I need to serve the correct WASM file off of the same javascript if possible ?
     // Could I do this using some sort of dynamic bundler ?
+
+    // I can probably just use EJS and set the required file to "fetch"
 });
 
 // Set the port and listen on it

@@ -8,6 +8,8 @@
         <script>
             const go = new Go();
 
+            // How can I have NodeJS fetch this content FOR the page so that it can choose what file to fetch ?
+
             WebAssembly.instantiateStreaming(
                 fetch("main.wasm"),
                 go.importObject

@@ -30,7 +30,6 @@ function WASMBird() {
     let pipes: Pipe[] = [];
 
     // Declare the constants for the bird
-    // We can check the birds distance using one unit travelled - if the distance is greater than 1 unit of travel (dPipeX) there does not need to be another render (edge cases)
     const birdSize = 0.075 * cvs.width;
 
     const birdX = 0.1 * cvs.width;

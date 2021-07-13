@@ -45,7 +45,7 @@ var _this = this;
             case 1:
                 result = _a.sent();
                 go.run(result.instance);
-                // ------------- Main logic ------------------
+                // Initialize the game
                 // Restart the game on press of e
                 addEventListener("keypress", function (e) {
                     if (e.code === "KeyR") {

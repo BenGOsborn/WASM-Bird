@@ -8,7 +8,7 @@
     );
     go.run(result.instance);
 
-    // ------------- Main logic ------------------
+    // Initialize the game
 
     // Restart the game on press of e
     addEventListener("keypress", (e) => {

@@ -1,3 +1,5 @@
+import { json } from "body-parser";
+
 (async () => {
     // Initialize the Go code
     const go = new Go();
@@ -9,6 +11,16 @@
     go.run(result.instance);
 
     // Initialize the game
+
+    // Initialize the max score by fetching from the URL initially
+    const maxScore = { maxScore: 0 };
+
+    const response = await fetch("/high_score");
+    if (response.status === 200) {
+        const json = (await response.json()) as { maxScore: number };
+
+        maxScore.maxScore = json.maxScore;
+    }
 
     // Restart the game on press of e
     addEventListener("keypress", (e) => {

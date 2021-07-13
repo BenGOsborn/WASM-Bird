@@ -1,6 +1,6 @@
 function WASMBird(highScore: { highScore: number }) {
     // Initialize the state of the game
-    const SPEED = 0.5; // Maybe this should also be interchangeable on some logarithmic scale (percentage of width to travel per render)
+    const SPEED = 0.5;
     let score = 0;
     let exit = false;
 
@@ -14,11 +14,11 @@ function WASMBird(highScore: { highScore: number }) {
 
     const pipeMinGap = 0.2 * cvs.height;
     const pipeMaxGap = 0.3 * cvs.height;
-
-    const pipeSpacing = 0.5 * cvs.width; // Maybe this should be interchangeable from some logarithmic scale and clamped so not too close
-
     const pipeWidth = 0.2 * cvs.width;
-    const dPipeX = cvs.width * (SPEED / 100);
+
+    // Adjust according to a logarithmic scale based on how far the game progresses
+    let pipeSpacing = 0.5 * cvs.width;
+    let dPipeX = cvs.width * (SPEED / 100);
 
     interface Pipe {
         gapStart: number;
@@ -125,6 +125,13 @@ function WASMBird(highScore: { highScore: number }) {
         // Check that the position of the bird is not below the specified amount
         birdY = Math.min(birdY + dBirdY, cvs.height - birdSize);
         dBirdY += GRAVITY;
+
+        // Speed up the game
+        pipeSpacing = Math.max(
+            0.3 * cvs.width,
+            score === 0 ? pipeSpacing : pipeSpacing - 1 / (score * cvs.width)
+        );
+        dPipeX += score === 0 ? 0 : 1 / (score * cvs.width);
 
         // Draw the score
         ctx.font = "30px urw-form, Helvetica, sans-serif";

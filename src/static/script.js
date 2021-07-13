@@ -34,9 +34,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
 var _this = this;
 (function () { return __awaiter(_this, void 0, void 0, function () {
-    var go, result, cvs, ctx, pipeMinHeight, pipeMaxHeight, pipeMinGap, pipeMaxGap, pipeSpacing, pipeWidth, dPipeX, pipes, draw;
+    var go, result, SPEED, DONE, SCORE, cvs, ctx, pipeMinHeight, pipeMaxHeight, pipeMinGap, pipeMaxGap, pipeSpacing, pipeWidth, dPipeX, pipes, draw;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -45,46 +50,51 @@ var _this = this;
             case 1:
                 result = _a.sent();
                 go.run(result.instance);
+                SPEED = 0.5;
+                DONE = false;
+                SCORE = 0;
                 cvs = document.getElementById("canvas");
                 ctx = cvs.getContext("2d");
                 pipeMinHeight = 0.1 * cvs.height;
                 pipeMaxHeight = 0.6 * cvs.height;
                 pipeMinGap = 0.2 * cvs.height;
                 pipeMaxGap = 0.3 * cvs.height;
-                pipeSpacing = 0.4 * cvs.width;
-                pipeWidth = 0.15 * cvs.width;
-                dPipeX = cvs.width / 100;
+                pipeSpacing = 0.5 * cvs.width;
+                pipeWidth = 0.2 * cvs.width;
+                dPipeX = cvs.width * (SPEED / 100);
                 pipes = [];
                 draw = function () {
                     // Initialize the background
                     ctx.fillStyle = "#0099ff";
                     ctx.fillRect(0, 0, cvs.width, cvs.height);
                     ctx.fillStyle = "#ffcc00";
-                    ctx.fillRect(0, cvs.height * 0.8, cvs.width, cvs.height);
-                    // Draw in the pipes and check that the bird is not within the pipe
+                    ctx.fillRect(0, cvs.height * 0.9, cvs.width, cvs.height);
                     // Filter the pipes out that are off of the screen
-                    pipes.filter(function (pipe) { return pipe.pipeX + pipeWidth > 0; });
+                    pipes = pipes.filter(function (pipe) { return pipe.pipeX + pipeWidth > 0; });
                     // Check if there are no pipes or the last pipe is at the threshold distance and add a new pipe
-                    if (pipes.length === 0 || pipes[pipes.length - 1].pipeX - pipeWidth > pipeSpacing) {
+                    if (pipes.length === 0 ||
+                        cvs.width - (pipes[pipes.length - 1].pipeX + pipeWidth) >
+                            pipeSpacing) {
                         // Initialize the height and gap size of the new pipe
                         var gapStart = Math.floor(Math.random() * (pipeMaxHeight - pipeMinHeight) + pipeMinHeight);
                         var gapHeight = Math.floor(Math.random() * (pipeMaxGap - pipeMinGap) + pipeMinGap);
                         // Add a new pipe to the list of pipes
-                        var newPipe = { gapHeight: gapStart, gapSize: pipeGap };
-                        pipes.push();
+                        var newPipe = { gapStart: gapStart, gapHeight: gapHeight, pipeX: cvs.width };
+                        pipes = __spreadArray(__spreadArray([], pipes), [newPipe]);
                     }
-                    pipes.map(function (pipe) {
-                        if (pipes.length === 0)
-                            ;
+                    // Move the pipe and check the position of the bird and the pipe
+                    pipes.forEach(function (pipe) {
+                        ctx.fillStyle = "#00cc00";
+                        ctx.fillRect(pipe.pipeX, 0, pipeWidth, pipe.gapStart);
+                        ctx.fillRect(pipe.pipeX, pipe.gapStart + pipe.gapHeight, pipeWidth, cvs.height);
+                        pipe.pipeX -= dPipeX;
                     });
-                    ctx.fillStyle = "#00cc00";
-                    ctx.fillRect(pipeX, 0, pipeX + pipeWidth, gapStart);
-                    ctx.fillRect(pipeX, gapStart + pipeGap, pipeX + pipeWidth, cvs.height);
-                    pipeX -= dPipeX;
-                    // Draw the next frame
-                    requestAnimationFrame(draw);
+                    // Keep drawing if not finished
+                    if (!DONE) {
+                        requestAnimationFrame(draw);
+                    }
                 };
-                // Start the loop
+                // Start the event loop (maybe wrap this in its own while loop for continued games too)
                 draw();
                 return [2 /*return*/];
         }

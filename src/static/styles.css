@@ -1,5 +1,14 @@
+* {
+    font-family: urw-form, Helvetica, sans-serif;
+}
+
 body {
     margin: 0;
     padding: 50px;
     text-align: center;
+}
+
+canvas {
+    border: 2px solid white;
+    border-radius: 10px;
 }

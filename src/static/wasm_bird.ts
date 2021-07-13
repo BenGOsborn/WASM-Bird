@@ -90,9 +90,6 @@ function WASMBird(highScore: { highScore: number }) {
                 birdX + birdSize >= pipe.pipeX &&
                 birdX <= pipe.pipeX + pipeWidth
             ) {
-                // Increment the score for each time it passes through then divide by the number of times it passes through (pipeWidth + birdSize) / Speed
-                score += 1;
-
                 // If the bird touches the pipe then stop
                 if (
                     birdY <= pipe.gapStart ||
@@ -101,6 +98,8 @@ function WASMBird(highScore: { highScore: number }) {
                     exit = true;
                 }
             }
+
+            // ***** Better score system
 
             // Move the pipe
             pipe.pipeX -= dPipeX;
@@ -117,32 +116,22 @@ function WASMBird(highScore: { highScore: number }) {
         birdY = Math.min(birdY + dBirdY, cvs.height - birdSize);
         dBirdY += GRAVITY;
 
-        // Get the score to display
-        // ********* I would like a better way of getting the score ?
-        const displayScore = Math.floor(
-            score / ((pipeWidth + birdSize) / dPipeX)
-        );
-
         // Draw the score
         ctx.font = "30px urw-form, Helvetica, sans-serif";
         ctx.fillStyle = "white";
         ctx.textAlign = "left";
-        ctx.fillText(
-            `Score: ${displayScore}`,
-            0.05 * cvs.width,
-            0.1 * cvs.height
-        );
+        ctx.fillText(`Score: ${score}`, 0.05 * cvs.width, 0.1 * cvs.height);
 
         // If the new score is higher than the max score update it and update the score on the server
-        if (displayScore > highScore.highScore) {
-            highScore.highScore = displayScore;
+        if (score > highScore.highScore) {
+            highScore.highScore = score;
             fetch("/high_score", {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ high_score: displayScore }),
+                body: JSON.stringify({ high_score: score }),
             });
         }
 

@@ -24,6 +24,7 @@ function WASMBird(highScore: { highScore: number }) {
         gapStart: number;
         gapHeight: number;
         pipeX: number;
+        scored: boolean;
     }
 
     // Store the pipes for drawing
@@ -70,7 +71,12 @@ function WASMBird(highScore: { highScore: number }) {
             );
 
             // Add a new pipe to the list of pipes
-            const newPipe: Pipe = { gapStart, gapHeight, pipeX: cvs.width };
+            const newPipe: Pipe = {
+                gapStart,
+                gapHeight,
+                pipeX: cvs.width,
+                scored: false,
+            };
             pipes = [...pipes, newPipe];
         }
 
@@ -99,7 +105,11 @@ function WASMBird(highScore: { highScore: number }) {
                 }
             }
 
-            // ***** Better score system
+            // Attempt to increment the score
+            if (!pipe.scored && pipe.pipeX + pipeWidth < birdX + birdSize) {
+                score += 1;
+                pipe.scored = true;
+            }
 
             // Move the pipe
             pipe.pipeX -= dPipeX;

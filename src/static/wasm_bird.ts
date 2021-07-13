@@ -118,7 +118,8 @@ function WASMBird(highScore: { highScore: number }) {
         dBirdY += GRAVITY;
 
         // Get the score to display
-        const displayStore = Math.floor(
+        // ********* I would like a better way of getting the score ?
+        const displayScore = Math.floor(
             score / ((pipeWidth + birdSize) / dPipeX)
         );
 
@@ -127,21 +128,21 @@ function WASMBird(highScore: { highScore: number }) {
         ctx.fillStyle = "white";
         ctx.textAlign = "left";
         ctx.fillText(
-            `Score: ${displayStore}`,
+            `Score: ${displayScore}`,
             0.05 * cvs.width,
             0.1 * cvs.height
         );
 
         // If the new score is higher than the max score update it and update the score on the server
-        if (displayStore > highScore.highScore) {
-            highScore.highScore = displayStore;
+        if (displayScore > highScore.highScore) {
+            highScore.highScore = displayScore;
             fetch("/high_score", {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ high_score: highScore.highScore }),
+                body: JSON.stringify({ high_score: displayScore }),
             });
         }
 
@@ -150,7 +151,7 @@ function WASMBird(highScore: { highScore: number }) {
         ctx.fillStyle = "white";
         ctx.textAlign = "right";
         ctx.fillText(
-            `High score: ${maxScore.maxScore}`,
+            `High score: ${highScore.highScore}`,
             0.95 * cvs.width,
             0.1 * cvs.height
         );

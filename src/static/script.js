@@ -41,7 +41,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from) {
 };
 var _this = this;
 (function () { return __awaiter(_this, void 0, void 0, function () {
-    var go, result, SPEED, DONE, SCORE, cvs, ctx, pipeMinHeight, pipeMaxHeight, pipeMinGap, pipeMaxGap, pipeSpacing, pipeWidth, dPipeX, pipes, draw;
+    var go, result, SPEED, DONE, SCORE, cvs, ctx, pipeMinHeight, pipeMaxHeight, pipeMinGap, pipeMaxGap, pipeSpacing, pipeWidth, dPipeX, pipes, birdWidth, birdHeight, birdX, birdY, dBirdY, GRAVITY, draw;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -63,12 +63,26 @@ var _this = this;
                 pipeWidth = 0.2 * cvs.width;
                 dPipeX = cvs.width * (SPEED / 100);
                 pipes = [];
+                birdWidth = 0.05 * cvs.width;
+                birdHeight = 0.025 * cvs.height;
+                birdX = 0.1 * cvs.width;
+                birdY = 0.5 * cvs.height;
+                dBirdY = cvs.width * (3 / 100);
+                GRAVITY = 10;
+                // Push the bird up
+                window.addEventListener("keydown", function (e) {
+                    if (e.code === "Space")
+                        dBirdY -= 50;
+                });
                 draw = function () {
                     // Initialize the background
                     ctx.fillStyle = "#0099ff";
                     ctx.fillRect(0, 0, cvs.width, cvs.height);
                     ctx.fillStyle = "#ffcc00";
                     ctx.fillRect(0, cvs.height * 0.9, cvs.width, cvs.height);
+                    // Draw in the bird
+                    ctx.fillStyle = "#ff6600";
+                    ctx.fillRect(birdX, birdY, birdWidth, birdHeight);
                     // Filter the pipes out that are off of the screen
                     pipes = pipes.filter(function (pipe) { return pipe.pipeX + pipeWidth > 0; });
                     // Check if there are no pipes or the last pipe is at the threshold distance and add a new pipe

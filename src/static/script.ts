@@ -42,6 +42,21 @@
     // Store the pipes for drawing
     let pipes: Pipe[] = [];
 
+    // Declare the constants for the bird
+    // We can check the birds distance using one unit travelled - if the distance is greater than 1 unit of travel (dPipeX) there does not need to be another render (edge cases)
+    const birdWidth = 0.05 * cvs.width;
+    const birdHeight = 0.025 * cvs.height;
+
+    const birdX = 0.1 * cvs.width;
+    let birdY = 0.5 * cvs.height;
+    let dBirdY = cvs.width * (3 / 100);
+    const GRAVITY = 10;
+
+    // Push the bird up
+    window.addEventListener("keydown", (e) => {
+        if (e.code === "Space") dBirdY -= 50;
+    });
+
     // Main draw loop
     const draw = () => {
         // Initialize the background
@@ -49,6 +64,10 @@
         ctx.fillRect(0, 0, cvs.width, cvs.height);
         ctx.fillStyle = "#ffcc00";
         ctx.fillRect(0, cvs.height * 0.9, cvs.width, cvs.height);
+
+        // Draw in the bird
+        ctx.fillStyle = "#ff6600";
+        ctx.fillRect(birdX, birdY, birdWidth, birdHeight);
 
         // Filter the pipes out that are off of the screen
         pipes = pipes.filter((pipe) => pipe.pipeX + pipeWidth > 0);

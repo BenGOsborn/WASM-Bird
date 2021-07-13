@@ -41,7 +41,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from) {
 };
 var _this = this;
 (function () { return __awaiter(_this, void 0, void 0, function () {
-    var go, result, SPEED, DONE, SCORE, cvs, ctx, pipeMinHeight, pipeMaxHeight, pipeMinGap, pipeMaxGap, pipeSpacing, pipeWidth, dPipeX, pipes, birdWidth, birdHeight, birdX, birdY, dBirdY, GRAVITY, draw;
+    var go, result, SPEED, SCORE, cvs, ctx, pipeMinHeight, pipeMaxHeight, pipeMinGap, pipeMaxGap, pipeSpacing, pipeWidth, dPipeX, pipes, birdSize, birdX, birdY, dBirdY, GRAVITY, draw;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -51,7 +51,6 @@ var _this = this;
                 result = _a.sent();
                 go.run(result.instance);
                 SPEED = 0.5;
-                DONE = false;
                 SCORE = 0;
                 cvs = document.getElementById("canvas");
                 ctx = cvs.getContext("2d");
@@ -63,16 +62,18 @@ var _this = this;
                 pipeWidth = 0.2 * cvs.width;
                 dPipeX = cvs.width * (SPEED / 100);
                 pipes = [];
-                birdWidth = 0.05 * cvs.width;
-                birdHeight = 0.025 * cvs.height;
+                birdSize = 0.1 * cvs.width;
                 birdX = 0.1 * cvs.width;
                 birdY = 0.5 * cvs.height;
-                dBirdY = cvs.width * (3 / 100);
-                GRAVITY = 10;
+                dBirdY = cvs.width * (1 / 100);
+                GRAVITY = cvs.width * (0.1 / 100);
                 // Push the bird up
                 window.addEventListener("keydown", function (e) {
-                    if (e.code === "Space")
-                        dBirdY -= 50;
+                    if (e.code === "Space") {
+                        // Instead of adding to the velocity, we need to provide a force
+                        dBirdY -= cvs.width * (5 / 100);
+                        console.log("Down");
+                    }
                 });
                 draw = function () {
                     // Initialize the background
@@ -80,9 +81,14 @@ var _this = this;
                     ctx.fillRect(0, 0, cvs.width, cvs.height);
                     ctx.fillStyle = "#ffcc00";
                     ctx.fillRect(0, cvs.height * 0.9, cvs.width, cvs.height);
-                    // Draw in the bird
+                    // Draw in the bird and update values
                     ctx.fillStyle = "#ff6600";
-                    ctx.fillRect(birdX, birdY, birdWidth, birdHeight);
+                    ctx.fillRect(birdX, birdY, birdSize, birdSize);
+                    // Check that the position of the bird is not below the specified amount
+                    birdY += dBirdY;
+                    dBirdY += GRAVITY;
+                    // Exit if the bird touches the ground
+                    // if (birdY > cvs.height) return;
                     // Filter the pipes out that are off of the screen
                     pipes = pipes.filter(function (pipe) { return pipe.pipeX + pipeWidth > 0; });
                     // Check if there are no pipes or the last pipe is at the threshold distance and add a new pipe
@@ -103,10 +109,8 @@ var _this = this;
                         ctx.fillRect(pipe.pipeX, pipe.gapStart + pipe.gapHeight, pipeWidth, cvs.height);
                         pipe.pipeX -= dPipeX;
                     });
-                    // Keep drawing if not finished
-                    if (!DONE) {
-                        requestAnimationFrame(draw);
-                    }
+                    // Draw the next frame
+                    requestAnimationFrame(draw);
                 };
                 // Start the event loop (maybe wrap this in its own while loop for continued games too)
                 draw();

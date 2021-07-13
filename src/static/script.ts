@@ -14,7 +14,6 @@
 
     // Initialize the state of the game
     const SPEED = 0.5; // Maybe this should also be interchangeable on some logarithmic scale (percentage of width to travel per render)
-    const DONE = false;
     const SCORE = 0;
 
     // Initialize the canvas
@@ -44,17 +43,20 @@
 
     // Declare the constants for the bird
     // We can check the birds distance using one unit travelled - if the distance is greater than 1 unit of travel (dPipeX) there does not need to be another render (edge cases)
-    const birdWidth = 0.05 * cvs.width;
-    const birdHeight = 0.025 * cvs.height;
+    const birdSize = 0.1 * cvs.width;
 
     const birdX = 0.1 * cvs.width;
     let birdY = 0.5 * cvs.height;
-    let dBirdY = cvs.width * (3 / 100);
-    const GRAVITY = 10;
+    let dBirdY = cvs.width * (1 / 100);
+    const GRAVITY = cvs.width * (0.1 / 100);
 
     // Push the bird up
     window.addEventListener("keydown", (e) => {
-        if (e.code === "Space") dBirdY -= 50;
+        if (e.code === "Space") {
+            // Instead of adding to the velocity, we need to provide a force
+            dBirdY -= cvs.width * (5 / 100);
+            console.log("Down");
+        }
     });
 
     // Main draw loop
@@ -65,9 +67,16 @@
         ctx.fillStyle = "#ffcc00";
         ctx.fillRect(0, cvs.height * 0.9, cvs.width, cvs.height);
 
-        // Draw in the bird
+        // Draw in the bird and update values
         ctx.fillStyle = "#ff6600";
-        ctx.fillRect(birdX, birdY, birdWidth, birdHeight);
+        ctx.fillRect(birdX, birdY, birdSize, birdSize);
+
+        // Check that the position of the bird is not below the specified amount
+        birdY += dBirdY;
+        dBirdY += GRAVITY;
+
+        // Exit if the bird touches the ground
+        // if (birdY > cvs.height) return;
 
         // Filter the pipes out that are off of the screen
         pipes = pipes.filter((pipe) => pipe.pipeX + pipeWidth > 0);
@@ -105,10 +114,8 @@
             pipe.pipeX -= dPipeX;
         });
 
-        // Keep drawing if not finished
-        if (!DONE) {
-            requestAnimationFrame(draw);
-        }
+        // Draw the next frame
+        requestAnimationFrame(draw);
     };
 
     // Start the event loop (maybe wrap this in its own while loop for continued games too)

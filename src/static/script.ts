@@ -11,8 +11,6 @@
     // ------------- Main logic ------------------
 
     function main() {
-        // (TURN THIS INTO WASM ONCE DONE)
-
         // Initialize the state of the game
         const SPEED = 0.5; // Maybe this should also be interchangeable on some logarithmic scale (percentage of width to travel per render)
         let score = 0;
@@ -53,7 +51,7 @@
         const GRAVITY = cvs.width * (0.1 / 100);
 
         // Push the bird up
-        window.addEventListener("keydown", (e) => {
+        window.addEventListener("keypress", (e) => {
             if (e.code === "Space") {
                 dBirdY = -cvs.width * (1 / 100);
             }
@@ -66,17 +64,6 @@
             ctx.fillRect(0, 0, cvs.width, cvs.height);
             ctx.fillStyle = "#ffcc00";
             ctx.fillRect(0, cvs.height * 0.9, cvs.width, cvs.height);
-
-            // Exit if the bird touches the ground
-            if (birdY === cvs.height - birdSize) exit = true;
-
-            // Draw in the bird and update values
-            ctx.fillStyle = "#ff6600";
-            ctx.fillRect(birdX, birdY, birdSize, birdSize);
-
-            // Check that the position of the bird is not below the specified amount
-            birdY = Math.min(birdY + dBirdY, cvs.height - birdSize);
-            dBirdY += GRAVITY;
 
             // Filter the pipes out that are off of the screen
             pipes = pipes.filter((pipe) => pipe.pipeX + pipeWidth > 0);
@@ -133,6 +120,29 @@
                 pipe.pipeX -= dPipeX;
             });
 
+            // Exit if the bird touches the ground
+            if (birdY === cvs.height - birdSize) exit = true;
+
+            // Draw in the bird and update values
+            ctx.fillStyle = "#ff6600";
+            ctx.fillRect(birdX, birdY, birdSize, birdSize);
+
+            // Check that the position of the bird is not below the specified amount
+            birdY = Math.min(birdY + dBirdY, cvs.height - birdSize);
+            dBirdY += GRAVITY;
+
+            // Draw the score
+            ctx.font = "30px urw-form, Helvetica, sans-serif";
+            ctx.fillStyle = "white";
+            ctx.textAlign = "left";
+            ctx.fillText(
+                `Score: ${Math.floor(
+                    score / ((pipeWidth + birdSize) / dPipeX)
+                )}`,
+                0.05 * cvs.width,
+                0.1 * cvs.height
+            );
+
             // Draw the next frame if the game is still running
             if (!exit) requestAnimationFrame(draw);
         };
@@ -140,10 +150,13 @@
         // Start the event loop (maybe wrap this in its own while loop for continued games too)
         draw();
 
-        // Down here I should make some sort of request to the server to log the score AND display some sort of error message (exit by returning)
-        // Keep track of the scores in the session somehow...
+        // Draw out the score
     }
 
     // Start the game (should be conditional)
-    main();
+    addEventListener("keypress", (e) => {
+        if (e.code === "KeyR") {
+            main();
+        }
+    });
 })();

@@ -45,7 +45,7 @@ var _this = this;
             case 1:
                 result = _a.sent();
                 go.run(result.instance);
-                // Main logic
+                // ------------- Main logic ------------------
                 console.log(add(1, 2, 4));
                 return [2 /*return*/];
         }

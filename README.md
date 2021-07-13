@@ -11,3 +11,4 @@ A flappy bird game created using Golang, WASM, and JavaScript.
  - Fix the score system
  - Allow adjustable speed
  - Rewrite in Go
+ - Add to docker and deploy (docker compose ?)

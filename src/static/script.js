@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 (function () { return __awaiter(_this, void 0, void 0, function () {
-    var go, result;
+    var go, result, cvs, ctx, pipeGap, pipeWidth, draw;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -45,8 +45,22 @@ var _this = this;
             case 1:
                 result = _a.sent();
                 go.run(result.instance);
-                // ------------- Main logic ------------------
-                console.log(add(1, 2, 5));
+                cvs = document.getElementById("canvas");
+                ctx = cvs.getContext("2d");
+                pipeGap = 0.2 * cvs.height;
+                pipeWidth = 0.2 * cvs.width;
+                draw = function () {
+                    // Initialize the background
+                    ctx.fillStyle = "#0099ff";
+                    ctx.fillRect(0, 0, cvs.width, cvs.height);
+                    ctx.fillStyle = "#ffcc00";
+                    ctx.fillRect(0, cvs.height * 0.8, cvs.width, cvs.height);
+                    // Draw in the pipes
+                    // Draw the next frame
+                    requestAnimationFrame(draw);
+                };
+                // Start the loop
+                draw();
                 return [2 /*return*/];
         }
     });

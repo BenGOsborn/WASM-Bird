@@ -10,9 +10,6 @@ app.use(
         secret: process.env.SECRET || "secret",
         resave: false,
         saveUninitialized: false,
-        cookie: {
-            maxAge: 60 * 60 * 24 * 365 * 100, // Does this work ?
-        },
     })
 );
 

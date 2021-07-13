@@ -46,7 +46,7 @@ function WASMBird(highScore: { highScore: number }) {
     });
 
     // Main draw loop
-    const draw = () => {
+    function draw() {
         // Initialize the background
         ctx.fillStyle = "#0099ff";
         ctx.fillRect(0, 0, cvs.width, cvs.height);
@@ -157,8 +157,24 @@ function WASMBird(highScore: { highScore: number }) {
 
         // Draw the next frame if the game is still running
         if (!exit) requestAnimationFrame(draw);
-    };
+        else onExit();
+    }
 
     // Start the event loop
     draw();
+
+    // Run on exit
+    function onExit() {
+        // Display an exit message on the screen
+        ctx.font = "40px urw-form, Helvetica, sans-serif";
+        ctx.fillStyle = "white";
+        ctx.textAlign = "center";
+        ctx.fillText("You lost!", 0.5 * cvs.width, 0.45 * cvs.height);
+        ctx.font = "30px urw-form, Helvetica, sans-serif";
+        ctx.fillText(
+            "Press 'r' to restart",
+            0.5 * cvs.width,
+            0.55 * cvs.height
+        );
+    }
 }

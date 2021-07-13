@@ -6,3 +6,6 @@ A flappy bird game created using Golang, WASM, and JavaScript.
  - NodeJS + TypeScript
  - WASM
  - Docker
+
+## Todo
+ - Fix the score system

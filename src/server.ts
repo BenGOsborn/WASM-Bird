@@ -16,7 +16,12 @@ app.use(
 // Get the sessions high score
 app.get("/high_score", async (req, res) => {
     // @ts-ignore
-    res.status(200).json({ high_score: req.session.high_score });
+    if (typeof req.session.high_score !== "undefined") {
+        // @ts-ignore
+        res.status(200).json({ high_score: req.session.high_score });
+    } else {
+        res.status(400).end("No high score for this session!");
+    }
 });
 
 // Set the sessions high score

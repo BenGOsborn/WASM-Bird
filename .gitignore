@@ -105,3 +105,4 @@ dist
 
 # Static files
 src/static/*.wasm
+src/static/*.js

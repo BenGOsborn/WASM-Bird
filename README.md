@@ -9,3 +9,5 @@ A flappy bird game created using Golang, WASM, and JavaScript.
 
 ## Todo
  - Fix the score system
+ - Allow adjustable speed
+ - Rewrite in Go

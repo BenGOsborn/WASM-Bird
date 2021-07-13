@@ -14,7 +14,8 @@
 
     // Initialize the state of the game
     const SPEED = 0.5; // Maybe this should also be interchangeable on some logarithmic scale (percentage of width to travel per render)
-    const SCORE = 0;
+    let score = 0;
+    let exit = false;
 
     // Initialize the canvas
     const cvs = document.getElementById("canvas") as HTMLCanvasElement;
@@ -43,7 +44,7 @@
 
     // Declare the constants for the bird
     // We can check the birds distance using one unit travelled - if the distance is greater than 1 unit of travel (dPipeX) there does not need to be another render (edge cases)
-    const birdSize = 0.1 * cvs.width;
+    const birdSize = 0.075 * cvs.width;
 
     const birdX = 0.1 * cvs.width;
     let birdY = 0.5 * cvs.height;
@@ -53,9 +54,7 @@
     // Push the bird up
     window.addEventListener("keydown", (e) => {
         if (e.code === "Space") {
-            // Instead of adding to the velocity, we need to provide a force
-            dBirdY -= cvs.width * (5 / 100);
-            console.log("Down");
+            dBirdY = -cvs.width * (1 / 100);
         }
     });
 
@@ -67,16 +66,16 @@
         ctx.fillStyle = "#ffcc00";
         ctx.fillRect(0, cvs.height * 0.9, cvs.width, cvs.height);
 
+        // Exit if the bird touches the ground
+        if (birdY === cvs.height - birdSize) exit = true;
+
         // Draw in the bird and update values
         ctx.fillStyle = "#ff6600";
         ctx.fillRect(birdX, birdY, birdSize, birdSize);
 
         // Check that the position of the bird is not below the specified amount
-        birdY += dBirdY;
+        birdY = Math.min(birdY + dBirdY, cvs.height - birdSize);
         dBirdY += GRAVITY;
-
-        // Exit if the bird touches the ground
-        // if (birdY > cvs.height) return;
 
         // Filter the pipes out that are off of the screen
         pipes = pipes.filter((pipe) => pipe.pipeX + pipeWidth > 0);
@@ -111,13 +110,26 @@
                 cvs.height
             );
 
-            // Get the distance between the bird and the pipe - if one distance unit then break, if in the same width and below the height thresholds then exit
+            // Check if the bird is in the pipe
+            if (
+                birdX + birdSize >= pipe.pipeX &&
+                birdX <= pipe.pipeX + pipeWidth
+            ) {
+                // If the bird touches the pipe then stop
+                if (
+                    birdY <= pipe.gapStart ||
+                    birdY + birdSize >= pipe.gapStart + pipe.gapHeight
+                ) {
+                    exit = true;
+                }
+            }
 
+            // Move the pipe
             pipe.pipeX -= dPipeX;
         });
 
-        // Draw the next frame
-        requestAnimationFrame(draw);
+        // Draw the next frame if the game is still running
+        if (!exit) requestAnimationFrame(draw);
     };
 
     // Start the event loop (maybe wrap this in its own while loop for continued games too)

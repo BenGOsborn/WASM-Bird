@@ -148,10 +148,10 @@ function WASMBird(maxScore: { maxScore: number }) {
         // Draw the max score
         ctx.font = "30px urw-form, Helvetica, sans-serif";
         ctx.fillStyle = "white";
-        ctx.textAlign = "left";
+        ctx.textAlign = "right";
         ctx.fillText(
-            `Score: ${Math.floor(score / ((pipeWidth + birdSize) / dPipeX))}`,
-            0.05 * cvs.width,
+            `High score: ${maxScore.maxScore}`,
+            0.95 * cvs.width,
             0.1 * cvs.height
         );
 

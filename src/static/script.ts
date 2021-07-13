@@ -1,5 +1,3 @@
-import { json } from "body-parser";
-
 (async () => {
     // Initialize the Go code
     const go = new Go();
@@ -19,7 +17,7 @@ import { json } from "body-parser";
     if (response.status === 200) {
         const json = await response.json();
 
-        maxScore.maxScore = json.maxScore;
+        maxScore.maxScore = json.high_score;
     }
 
     // Restart the game on press of e

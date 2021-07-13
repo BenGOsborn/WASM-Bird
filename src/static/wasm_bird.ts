@@ -132,7 +132,7 @@ function WASMBird(highScore: { highScore: number }) {
             0.1 * cvs.height
         );
 
-        // If the new score is higher than the max score update it
+        // If the new score is higher than the max score update it and update the score on the server
         if (displayStore > highScore.highScore) {
             highScore.highScore = displayStore;
             fetch("/high_score", {
@@ -141,7 +141,7 @@ function WASMBird(highScore: { highScore: number }) {
                     Accept: "application/json",
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ high_score: highScore.highScore }), // Maybe change the same name to highScore instead of maxScore ?
+                body: JSON.stringify({ high_score: highScore.highScore }),
             });
         }
 

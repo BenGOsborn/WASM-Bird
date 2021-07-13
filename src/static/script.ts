@@ -8,5 +8,6 @@
     );
     go.run(result.instance);
 
-    console.log(add(1, 2, 4)); // It is not loaded - I need to wait for it to be loaded in
+    // Main logic
+    console.log(add(1, 2, 4));
 })();

@@ -45,7 +45,8 @@ var _this = this;
             case 1:
                 result = _a.sent();
                 go.run(result.instance);
-                console.log(add(1, 2, 4)); // It is not loaded - I need to wait for it to be loaded in
+                // Main logic
+                console.log(add(1, 2, 4));
                 return [2 /*return*/];
         }
     });

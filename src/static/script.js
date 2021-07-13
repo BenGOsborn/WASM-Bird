@@ -53,18 +53,18 @@ exports.__esModule = true;
                 if (!(response.status === 200)) return [3 /*break*/, 4];
                 return [4 /*yield*/, response.json()];
             case 3:
-                json_1 = (_a.sent());
+                json_1 = _a.sent();
                 maxScore.maxScore = json_1.maxScore;
                 _a.label = 4;
             case 4:
                 // Restart the game on press of e
                 addEventListener("keypress", function (e) {
                     if (e.code === "KeyR") {
-                        WASMBird();
+                        WASMBird(maxScore);
                     }
                 });
                 // Run main once
-                WASMBird();
+                WASMBird(maxScore);
                 return [2 /*return*/];
         }
     });

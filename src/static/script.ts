@@ -17,7 +17,7 @@ import { json } from "body-parser";
 
     const response = await fetch("/high_score");
     if (response.status === 200) {
-        const json = (await response.json()) as { maxScore: number };
+        const json = await response.json();
 
         maxScore.maxScore = json.maxScore;
     }
@@ -25,10 +25,10 @@ import { json } from "body-parser";
     // Restart the game on press of e
     addEventListener("keypress", (e) => {
         if (e.code === "KeyR") {
-            WASMBird();
+            WASMBird(maxScore);
         }
     });
 
     // Run main once
-    WASMBird();
+    WASMBird(maxScore);
 })();

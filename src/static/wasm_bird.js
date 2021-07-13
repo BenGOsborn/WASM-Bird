@@ -3,7 +3,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from) {
         to[j] = from[i];
     return to;
 };
-function WASMBird() {
+function WASMBird(maxScore) {
     // Initialize the state of the game
     var SPEED = 0.5; // Maybe this should also be interchangeable on some logarithmic scale (percentage of width to travel per render)
     var score = 0;
@@ -81,7 +81,26 @@ function WASMBird() {
         // Check that the position of the bird is not below the specified amount
         birdY = Math.min(birdY + dBirdY, cvs.height - birdSize);
         dBirdY += GRAVITY;
+        // Get the score to display
+        var displayStore = Math.floor(score / ((pipeWidth + birdSize) / dPipeX));
         // Draw the score
+        ctx.font = "30px urw-form, Helvetica, sans-serif";
+        ctx.fillStyle = "white";
+        ctx.textAlign = "left";
+        ctx.fillText("Score: " + displayStore, 0.05 * cvs.width, 0.1 * cvs.height);
+        // If the new score is higher than the max score update it
+        if (displayStore > maxScore.maxScore) {
+            maxScore.maxScore = displayStore;
+            fetch("/high_score", {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ high_score: maxScore.maxScore })
+            });
+        }
+        // Draw the max score
         ctx.font = "30px urw-form, Helvetica, sans-serif";
         ctx.fillStyle = "white";
         ctx.textAlign = "left";
@@ -90,6 +109,6 @@ function WASMBird() {
         if (!exit)
             requestAnimationFrame(draw);
     };
-    // Start the event loop (maybe wrap this in its own while loop for continued games too)
+    // Start the event loop
     draw();
 }

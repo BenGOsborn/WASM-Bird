@@ -46,7 +46,7 @@ var _this = this;
                 result = _a.sent();
                 go.run(result.instance);
                 // ------------- Main logic ------------------
-                console.log(add(1, 2, 4));
+                console.log(add(1, 2, 5));
                 return [2 /*return*/];
         }
     });

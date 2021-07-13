@@ -10,23 +10,23 @@
 
     // Initialize the game
 
-    // Initialize the max score by fetching from the URL initially
-    const maxScore = { maxScore: 0 };
+    // Initialize the high score by fetching from the URL initially
+    const highScore = { highScore: 0 };
 
     const response = await fetch("/high_score");
     if (response.status === 200) {
         const json = await response.json();
 
-        maxScore.maxScore = json.high_score;
+        highScore.highScore = json.high_score;
     }
 
     // Restart the game on press of e
     addEventListener("keypress", (e) => {
         if (e.code === "KeyR") {
-            WASMBird(maxScore);
+            WASMBird(highScore);
         }
     });
 
     // Run main once
-    WASMBird(maxScore);
+    WASMBird(highScore);
 })();

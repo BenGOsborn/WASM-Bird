@@ -1,4 +1,4 @@
-function WASMBird(maxScore: { maxScore: number }) {
+function WASMBird(highScore: { highScore: number }) {
     // Initialize the state of the game
     const SPEED = 0.5; // Maybe this should also be interchangeable on some logarithmic scale (percentage of width to travel per render)
     let score = 0;
@@ -133,15 +133,15 @@ function WASMBird(maxScore: { maxScore: number }) {
         );
 
         // If the new score is higher than the max score update it
-        if (displayStore > maxScore.maxScore) {
-            maxScore.maxScore = displayStore;
+        if (displayStore > highScore.highScore) {
+            highScore.highScore = displayStore;
             fetch("/high_score", {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ high_score: maxScore.maxScore }), // Maybe change the same name to highScore instead of maxScore ?
+                body: JSON.stringify({ high_score: highScore.highScore }), // Maybe change the same name to highScore instead of maxScore ?
             });
         }
 

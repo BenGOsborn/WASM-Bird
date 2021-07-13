@@ -107,6 +107,7 @@ var _this = this;
                         ctx.fillStyle = "#00cc00";
                         ctx.fillRect(pipe.pipeX, 0, pipeWidth, pipe.gapStart);
                         ctx.fillRect(pipe.pipeX, pipe.gapStart + pipe.gapHeight, pipeWidth, cvs.height);
+                        // Get the distance between the bird and the pipe - if one distance unit then break, if in the same width and below the height thresholds then exit
                         pipe.pipeX -= dPipeX;
                     });
                     // Draw the next frame

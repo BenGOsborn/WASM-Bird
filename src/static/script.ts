@@ -111,6 +111,8 @@
                 cvs.height
             );
 
+            // Get the distance between the bird and the pipe - if one distance unit then break, if in the same width and below the height thresholds then exit
+
             pipe.pipeX -= dPipeX;
         });
 

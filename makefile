@@ -1,6 +1,6 @@
 # Compile golang to WASM
 go-build:
-	GOOS=js GOARCH=wasm go build -o src_go/static/main.wasm src_go/main.go
+	GOOS=js GOARCH=wasm go build -o src_go/static/main.wasm src_go/main/main.go
 
 # Start the Go server
 go-start:

@@ -13,8 +13,6 @@ js-dev: js-install
 js-compile:
 	npm run --prefix src_ts compile
 
+# Clean the js files
 js-clean:
 	find . -wholename './src_ts/*.js' -not -path './src_ts/node_modules/*' -delete
-
-js-build: js-compile js-clean
-	js-compile js-clean

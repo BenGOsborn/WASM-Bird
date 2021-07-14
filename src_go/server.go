@@ -1,18 +1,14 @@
 package main
 
 import (
-	"flag"
-	"log"
+	"fmt"
 	"net/http"
 )
 
-var (
-	listen = flag.String("listen", ":3000", "listen address");
-	dir = flag.String("dir", "./static", "directory to serve");
-)
-
 func main() {
-	flag.Parse();
-	log.Printf("Listening on %q...", *listen)
-	log.Fatal(http.ListenAndServe(*listen, http.FileServer(http.Dir(*dir))))
+	PORT := ":3000";
+	FILE_DIR := "./src_go/static"
+
+	fmt.Println("Listening on http://localhost" + PORT);
+	fmt.Println(http.ListenAndServe(PORT, http.FileServer(http.Dir(FILE_DIR))))
 }

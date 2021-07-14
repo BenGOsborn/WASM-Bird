@@ -1,6 +1,10 @@
 # Compile golang to WASM
-go:
-	GOOS=js GOARCH=wasm go build -o src_ts/static/main.wasm src_ts/go/main.go
+go-build:
+	GOOS=js GOARCH=wasm go build -o src_go/static/main.wasm src_go/main.go
+
+# Start the Go server
+go-start:
+	go run src_go/server.go
 
 # Install the required npm packages
 js-install-dev:

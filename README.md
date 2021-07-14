@@ -14,4 +14,4 @@ A flappy bird game created using Golang, WASM, and TypeScript.
 -   Rewrite in Go
 -   Add to docker and deploy (docker compose ?)
 -   MAYBE add webpack for the TS
-- WebGL with WASM might be interesting (my own game engine + visualizing apps)
+- WebGL with WASM might be interesting (my own game engine + visualizing algorithms)

@@ -1,15 +1,4 @@
 (async () => {
-    // Initialize the Go code
-
-    // // @ts-ignore
-    // const go = new Go();
-
-    // const result = await WebAssembly.instantiateStreaming(
-    //     fetch("main.wasm"),
-    //     go.importObject
-    // );
-    // go.run(result.instance);
-
     // Initialize the game
 
     // Initialize the high score by fetching from the URL initially

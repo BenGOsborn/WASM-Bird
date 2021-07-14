@@ -1,0 +1,25 @@
+* {
+    font-family: urw-form, Helvetica, sans-serif;
+}
+
+body {
+    margin: 0 auto;
+    padding: 50px;
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container * {
+    margin: 20px auto;
+}
+
+canvas {
+    border: 2px solid white;
+    border-radius: 10px;
+}

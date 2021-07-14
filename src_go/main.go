@@ -15,15 +15,8 @@ func add(this js.Value, args []js.Value) interface{} {
 	return js.ValueOf(total)
 }
 
-func addEventListener(elementID string, event string) {
-	callback := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-		event := args[0].Get("pageX").Float()
-
-		fmt.Println(event)
-
-		return nil
-	})
-	js.Global().Get("document").Call("getElementById", elementID).Call("addEventListener", event, callback)
+func addEventListener(elementID string, eventName string, callback func(this js.Value, args []js.Value) interface{}) {
+	js.Global().Get("document").Call("getElementById", elementID).Call("addEventListener", eventName, js.FuncOf(callback))
 }
 
 func main() {
@@ -33,7 +26,13 @@ func main() {
 	fmt.Println("Hello world from GO!")
 
 	// Add an event listener
-	addEventListener("canvas", "click")
+	addEventListener("canvas", "click", func(this js.Value, args []js.Value) interface{} {
+		event := args[0].Get("pageX").Float()
+
+		fmt.Println(event)
+
+		return nil
+	})
 
 	// Expose functions
 	js.Global().Set("add", js.FuncOf(add))

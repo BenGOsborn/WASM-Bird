@@ -2,7 +2,9 @@
     "name": "wasm-bird",
     "version": "1.0.0",
     "scripts": {
-        "dev": "concurrently -k \"nodemon server.ts\" \"tsc static/*.ts --watch\""
+        "dev": "concurrently -k \"nodemon server.ts\" \"tsc static/*.ts --watch\"",
+        "compile": "tsc",
+        "start": "node dist/server.js"
     },
     "dependencies": {
         "express": "^4.17.1",

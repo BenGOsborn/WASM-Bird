@@ -1,15 +1,16 @@
 # WASM-Bird
+
 A flappy bird game created using Golang, WASM, and TypeScript.
 
 ## Tools
- - Golang
- - NodeJS + TypeScript
- - WASM
- - Docker
+
+-   Golang
+-   NodeJS + TypeScript
+-   WASM
+-   Docker
 
 ## Todo
- - Fix the score system
- - Allow adjustable speed
- - Rewrite in Go
- - Add to docker and deploy (docker compose ?)
- - Display "OVER" message on canvas
+
+-   Rewrite in Go
+-   Add to docker and deploy (docker compose ?)
+-   MAYBE add webpack for the TS

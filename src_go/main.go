@@ -29,32 +29,27 @@ func NewCanvas(id string) *Canvas {
 }
 
 func WASMBird(this js.Value, args []js.Value) interface{} {
-	total := 0
+	fmt.Println("Load")
 
-	for _, value := range args {
-		total += value.Int()
-	}
+	// Add an event listener for key presses
+	addEventListener("canvas", "keypress", func(this js.Value, args []js.Value) interface{} {
+		fmt.Println("LOl!")
 
-	return js.ValueOf(total)
+		code := args[0].Get("code").String()
+		if code == "Space" {
+			fmt.Println("Space!")
+		}
+		return nil
+	})
+
+	return nil
 }
 
 func main() {
 	// Channel used to prevent program terminating
 	c := make(chan struct{}, 0)
 
-	fmt.Println("Hello world from GO!")
-
-	// Add an event listener
-	addEventListener("canvas", "click", func(this js.Value, args []js.Value) interface{} {
-		event := args[0].Get("pageX").Float()
-
-		fmt.Println(event)
-
-		return nil
-	})
-
-	// Expose functions
-	js.Global().Set("add", js.FuncOf(add))
+	js.Global().Set("WASMBird", js.FuncOf(WASMBird))
 
 	// Prevent the program from terminating
 	<-c

@@ -7,7 +7,7 @@
     );
     go.run(result.instance);
 
-    addEventListener("click", (e => {
-        e.initMouseEvent
-    }))
+    // The below code is NOT executing
+    console.log("LOl");
+    WASMBird();
 })();

@@ -6,4 +6,8 @@
         go.importObject
     );
     go.run(result.instance);
+
+    addEventListener("click", (e => {
+        e.initMouseEvent
+    }))
 })();

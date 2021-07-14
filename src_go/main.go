@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"reflect"
 	"syscall/js"
 )
 
@@ -18,12 +17,9 @@ func add(this js.Value, args []js.Value) interface{} {
 
 func addEventListener(elementID string, event string) {
 	callback := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-		history := reflect.ValueOf(args)
+		event := args[0].Get("pageX").Float()
 
-		for i := 0; i < history.Len(); i++ {
-			test := history.Index(i).Interface().(map[string]interface{})
-			fmt.Println("test", test["pageX"].(string))
-		}
+		fmt.Println(event)
 
 		return nil
 	})

@@ -5,8 +5,8 @@ import (
 	"syscall/js"
 )
 
-func addEventListener(elementID string, eventName string, callback func(this js.Value, args []js.Value) interface{}) {
-	js.Global().Get("document").Call("getElementById", elementID).Call("addEventListener", eventName, js.FuncOf(callback))
+func addEventListener(eventName string, callback func(this js.Value, args []js.Value) interface{}) {
+	js.Global().Get("document").Call("addEventListener", eventName, js.FuncOf(callback))
 }
 
 type Canvas struct {
@@ -29,12 +29,8 @@ func NewCanvas(id string) *Canvas {
 }
 
 func WASMBird(this js.Value, args []js.Value) interface{} {
-	fmt.Println("Load")
-
-	// Add an event listener for key presses
-	addEventListener("canvas", "keypress", func(this js.Value, args []js.Value) interface{} {
-		fmt.Println("LOl!")
-
+	// Event listener for jump
+	addEventListener("keypress", func(this js.Value, args []js.Value) interface{} {
 		code := args[0].Get("code").String()
 		if code == "Space" {
 			fmt.Println("Space!")
@@ -49,6 +45,7 @@ func main() {
 	// Channel used to prevent program terminating
 	c := make(chan struct{}, 0)
 
+	// Initialize the functions in JS
 	js.Global().Set("WASMBird", js.FuncOf(WASMBird))
 
 	// Prevent the program from terminating

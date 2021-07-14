@@ -8,6 +8,5 @@
     go.run(result.instance);
 
     // The below code is NOT executing
-    console.log("LOl");
     WASMBird();
 })();

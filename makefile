@@ -13,6 +13,6 @@ js-dev: js-install
 js-compile:
 	npm run --prefix src_ts compile
 
-# Clean the js files
-js-clean:
-	find . -wholename './src_ts/*.js' -not -path './src_ts/node_modules/*' -delete
+# Redirect the files into the correct folder
+js-move:
+	mkdir src_ts/dist && find . -wholename './src_ts/*.js' -not -path './src_ts/node_modules/*' -exec mv -t src_ts/dist {} +

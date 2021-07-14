@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"reflect"
 	"syscall/js"
 )
 
@@ -17,11 +18,16 @@ func add(this js.Value, args []js.Value) interface{} {
 
 func addEventListener(elementID string, event string) {
 	callback := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-		fmt.Println(args)
+		history := reflect.ValueOf(args)
+
+		for i := 0; i < history.Len(); i++ {
+			test := history.Index(i).Interface().(map[string]interface{})
+			fmt.Println("test", test["pageX"].(string))
+		}
 
 		return nil
 	})
-	js.Global().Get("document").Call("getElementById", elementID).Call("addEventListener", "click", callback)
+	js.Global().Get("document").Call("getElementById", elementID).Call("addEventListener", event, callback)
 }
 
 func main() {

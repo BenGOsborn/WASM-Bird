@@ -1,5 +1,5 @@
 (async () => {
-    // Initialize the Go code
+    // Initialize the Go WASM code
     const go = new Go();
     const result = await WebAssembly.instantiateStreaming(
         fetch("main.wasm"),

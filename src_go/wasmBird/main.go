@@ -23,40 +23,45 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 	CVS_WIDTH := cvs.Get("width").Float()
 	CVS_HEIGHT := cvs.Get("height").Float()
 
-	fmt.Println(CVS_WIDTH)
-	fmt.Println(CVS_HEIGHT)
-
 	// Initialize the values of the game
 	const SPEED = 0.5
-	var score float64 = 0
-	exit := false
-	GRAVITY := CVS_WIDTH * (0.1 / 100)
+	var (
+		score   float64 = 0
+		exit    bool    = false
+		GRAVITY float64 = CVS_WIDTH * (0.1 / 100)
+	)
 
 	// Declare the values for the pipe
-	pipeMinHeight := 0.1 * CVS_WIDTH
-	pipeMaxHeight := 0.6 * CVS_HEIGHT
-	pipeMinGap := 0.2 * CVS_HEIGHT
-	pipeMaxGap := 0.3 * CVS_HEIGHT
-	pipeWidth := 0.2 * CVS_WIDTH
+	var (
+		pipeMinHeight float64 = 0.1 * CVS_WIDTH
+		pipeMaxHeight float64 = 0.6 * CVS_HEIGHT
+		pipeMinGap    float64 = 0.2 * CVS_HEIGHT
+		pipeMaxGap    float64 = 0.3 * CVS_HEIGHT
+		pipeWidth     float64 = 0.2 * CVS_WIDTH
+	)
 
 	// Adjust according to a logarithmic scale
-	pipeSpacing := 0.5 * CVS_WIDTH
-	dPipeX := CVS_WIDTH * (SPEED / 100)
+	var (
+		pipeSpacing float64 = 0.5 * CVS_WIDTH
+		dPipeX      float64 = CVS_WIDTH * (float64(SPEED) / 100)
+	)
 
 	// Store the pipes for drawing
 	var pipes []*Pipe
 
 	// Declare the values for the bird
-	birdSize := 0.075 * CVS_WIDTH
-	birdX := 0.1 * CVS_WIDTH
-	birdY := 0.5 * CVS_HEIGHT
-	dBirdY := CVS_WIDTH * (1 / 100)
+	var (
+		birdSize float64 = 0.075 * CVS_WIDTH
+		birdX    float64 = 0.1 * CVS_WIDTH
+		birdY    float64 = 0.5 * CVS_HEIGHT
+		dBirdY   float64 = CVS_WIDTH * (1.0 / 100)
+	)
 
 	// Event listener for jump
 	lib.AddEventListener("keypress", func(this js.Value, args []js.Value) interface{} {
 		code := args[0].Get("code").String()
 		if code == "Space" {
-			dBirdY = -CVS_WIDTH * (1 / 100)
+			dBirdY = -CVS_WIDTH * (1.0 / 100)
 		}
 		return nil
 	})
@@ -80,7 +85,7 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 		pipes = tempPipes
 
 		// Attempt to add a new pipe
-		if len(pipes) == 0 || CVS_WIDTH-(pipes[len(pipes)-1].pipeX+pipeWidth) > 0 {
+		if len(pipes) == 0 || CVS_WIDTH-(pipes[len(pipes)-1].pipeX+pipeWidth) > pipeSpacing {
 			newPipe := new(Pipe)
 			newPipe.gapStart = math.Floor(rand.Float64()*(pipeMaxHeight-pipeMinHeight) + pipeMinHeight)
 			newPipe.gapHeight = math.Floor(rand.Float64()*(pipeMaxGap-pipeMinGap) + pipeMinGap)
@@ -127,18 +132,18 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 		birdY = math.Min(birdY+dBirdY, CVS_HEIGHT-birdSize)
 		dBirdY += GRAVITY
 
-		// Speed up the game
-		var tempPipeSpacing float64 = 0
-		if score != 0 {
-			tempPipeSpacing = pipeSpacing - 1/(score*CVS_WIDTH)
-		}
-		pipeSpacing = math.Max(0.3*CVS_WIDTH, float64(tempPipeSpacing))
+		// // Speed up the game - ******* Pretty sure this is broken
+		// var tempPipeSpacing float64 = 0
+		// if score != 0 {
+		// 	tempPipeSpacing = pipeSpacing - 1.0/(score*CVS_WIDTH)
+		// }
+		// pipeSpacing = math.Max(0.3*CVS_WIDTH, float64(tempPipeSpacing))
 
-		var tempDPipeX float64 = 0
-		if score != 0 {
-			tempDPipeX = 1 / (score * CVS_WIDTH)
-		}
-		dPipeX += tempDPipeX
+		// var tempDPipeX float64 = 0
+		// if score != 0 {
+		// 	tempDPipeX = 1.0 / (score * CVS_WIDTH)
+		// }
+		// dPipeX += tempDPipeX
 
 		// Draw in the score
 		ctx.Set("font", "30px urw-form, Helvetica, sans-serif")

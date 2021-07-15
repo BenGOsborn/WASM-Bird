@@ -1,10 +1,13 @@
 # Compile golang to WASM
-go-build:
+go-compile:
 	cd src_go/wasmBird; GOOS=js GOARCH=wasm go build -o ../static/main.wasm main.go
 
 # Start the server for the app built using WASM
 go-start:
 	npm run --prefix src_go dev
+
+# Build the Go app Docker image
+# go-build:
 
 # Run npm development server
 js-dev:

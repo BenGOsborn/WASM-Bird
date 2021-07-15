@@ -82,6 +82,47 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 			newPipe.scored = false
 			pipes = append(pipes, newPipe)
 		}
+
+		// Move the pipes and check their positions relative to the bird
+		for _, pipe := range pipes {
+			// Draw the pipe
+			ctx.Set("fillStyle", "#00cc00")
+			ctx.Call("fillRect", pipe.pipeX, 0, pipeWidth, pipe.gapStart)
+			ctx.Call("fillRect", pipe.pipeX, pipe.gapStart+pipe.gapHeight, pipeWidth, CVS_HEIGHT)
+
+			// Check if the bird is within the pipe
+			if birdX+birdSize >= pipe.pipeX && birdX <= pipe.pipeX+pipeWidth {
+				// Check if the bird has touched the pipe and stop if so
+				if birdY <= pipe.gapStart || birdY+birdSize >= pipe.gapStart+pipe.gapHeight {
+					exit = true
+				}
+			}
+
+			// Attempt to increment the score
+			if !pipe.scored && pipe.pipeX+pipeWidth < birdX+birdSize {
+				score += 1
+				pipe.scored = true
+			}
+
+			// Move the pipe
+			pipe.pipeX -= dPipeX
+		}
+
+		// Draw in the bird
+		ctx.Set("fillStyle", "#ff6600")
+		ctx.Set("fillRect", birdX, birdY, birdSize, birdSize)
+
+		// Exit if the bird touches the ground
+		if birdY == CVS_HEIGHT-birdSize {
+			exit = true
+		}
+
+		// Update the values for the bird
+		birdY = math.Min(birdY+dBirdY, CVS_HEIGHT-birdSize)
+		dBirdY += GRAVITY
+
+		// Speed up the game
+		// pipeSpacing = math.Max(0.3 * CVS_WIDTH) // Not done yet
 	}
 
 	return nil

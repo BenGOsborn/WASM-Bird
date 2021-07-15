@@ -15,4 +15,4 @@ A flappy bird game created using Golang, WASM, and TypeScript.
 -   Add to docker and deploy (docker compose ?)
 -   MAYBE add webpack for the TS
 - WebGL with WASM might be interesting (my own game engine + visualizing algorithms)
-- Change ">=" in ts to ">=="
+- Change ">=" in ts to ">==", ts max score should be high score, remove the fills that are the same

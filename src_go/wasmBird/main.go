@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"math"
 	"math/rand"
+	"strconv"
 	"syscall/js"
-	lib "wasmBird/lib"
+	"wasmBird/lib"
 )
 
 type Pipe struct {
@@ -16,15 +16,6 @@ type Pipe struct {
 }
 
 func WASMBird(this js.Value, args []js.Value) interface{} {
-	// Event listener for jump
-	lib.AddEventListener("keypress", func(this js.Value, args []js.Value) interface{} {
-		code := args[0].Get("code").String()
-		if code == "Space" {
-			fmt.Println("Space!")
-		}
-		return nil
-	})
-
 	// Initialize the canvas
 	cvs := js.Global().Get("document").Call("getElementById", "canvas")
 	ctx := cvs.Call("getContext", "2d")
@@ -57,6 +48,15 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 	birdX := 0.1 * CVS_WIDTH
 	birdY := 0.5 * CVS_HEIGHT
 	dBirdY := CVS_WIDTH * (1 / 100)
+
+	// Event listener for jump
+	lib.AddEventListener("keypress", func(this js.Value, args []js.Value) interface{} {
+		code := args[0].Get("code").String()
+		if code == "Space" {
+			dBirdY = -CVS_WIDTH * (1 / 100)
+		}
+		return nil
+	})
 
 	for !exit {
 		ctx.Set("fillStyle", "#0099ff")
@@ -122,8 +122,35 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 		dBirdY += GRAVITY
 
 		// Speed up the game
-		// pipeSpacing = math.Max(0.3 * CVS_WIDTH) // Not done yet
+		tempPipeSpacing := 0
+		if score != 0 {
+			tempPipeSpacing = pipeSpacing - 1/(score*CVS_WIDTH)
+		}
+		pipeSpacing = math.Max(0.3*CVS_WIDTH, float64(tempPipeSpacing))
+
+		tempDPipeX := 0
+		if score != 0 {
+			tempDPipeX = 1 / (score * CVS_WIDTH)
+		}
+		dPipeX += tempDPipeX
+
+		// Draw in the score
+		ctx.Set("font", "30px urw-form, Helvetica, sans-serif")
+		ctx.Set("fillStyle", "#ffffff")
+		ctx.Set("textAlign", "left")
+		ctx.Call("fillText", "Score: "+strconv.Itoa(score), 0.05*CVS_WIDTH, 0.1*CVS_HEIGHT)
+
+		// Draw in the score
+		ctx.Set("textAlign", "right")
+		ctx.Call("fillText", "High score: "+strconv.Itoa(score), 0.95*CVS_WIDTH, 0.1*CVS_HEIGHT)
 	}
+
+	// Display on exit
+	ctx.Set("textAlign", "center")
+	ctx.Set("font", "40px urw-form, Helvetica, sans-serif")
+	ctx.Call("fillText", "You lost!", 0.5*CVS_WIDTH, 0.45*CVS_HEIGHT)
+	ctx.Set("font", "30px urw-form, Helvetica, sans-serif")
+	ctx.Call("fillText", "Press 'r' to restart", 0.5*CVS_WIDTH, 0.55*CVS_HEIGHT)
 
 	return nil
 }

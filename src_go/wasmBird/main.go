@@ -10,11 +10,12 @@ import (
 
 func WASMBird(this js.Value, args []js.Value) interface{} {
 	// Initialize the canvas
-	cvs := js.Global().Get("document").Call("getElementById", "canvas")
-	ctx := cvs.Call("getContext", "2d")
-
-	CVS_WIDTH := cvs.Get("width").Float()
-	CVS_HEIGHT := cvs.Get("height").Float()
+	var (
+		cvs        js.Value = js.Global().Get("document").Call("getElementById", "canvas")
+		ctx        js.Value = cvs.Call("getContext", "2d")
+		CVS_WIDTH  float64  = cvs.Get("width").Float()
+		CVS_HEIGHT float64  = cvs.Get("height").Float()
+	)
 
 	// Initialize the values of the game
 	const SPEED = 0.5

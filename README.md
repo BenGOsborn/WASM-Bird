@@ -19,3 +19,4 @@ A flappy bird game created using Golang, WASM, and TypeScript.
 
 - Add event listener for click as jump
 - Add a way to track and score and add a session for tracking high scores via sessions
+- Fix the speed ups

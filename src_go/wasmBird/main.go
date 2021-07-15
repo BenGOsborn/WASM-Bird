@@ -58,6 +58,10 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 
 	for !exit {
 		ctx.Set("fillStyle", "#0099ff")
+		ctx.Call("fillRect", 0, 0, CVS_WIDTH, CVS_HEIGHT)
+		ctx.Set("fillStyle", "#ffcc00")
+		ctx.Call("fillRect", 0, 0.9*CVS_HEIGHT, CVS_WIDTH, CVS_HEIGHT)
+		break
 	}
 
 	return nil

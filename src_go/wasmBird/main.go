@@ -20,9 +20,10 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 	// Initialize the values of the game
 	const SPEED = 0.5
 	var (
-		score   float64 = 0
-		exit    bool    = false
-		GRAVITY float64 = CVS_WIDTH * (0.1 / 100)
+		highScore js.Value = args[0]
+		score     float64  = 0
+		exit      bool     = false
+		GRAVITY   float64  = CVS_WIDTH * (0.1 / 100)
 	)
 
 	// Declare the values for the pipe
@@ -131,7 +132,7 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 		birdY = math.Min(birdY+dBirdY, CVS_HEIGHT-birdSize)
 		dBirdY += GRAVITY
 
-		// // Speed up the game
+		// Speed up the game
 		var tempPipeSpacing float64 = pipeSpacing
 		if score != 0 {
 			tempPipeSpacing = pipeSpacing - 1.0/(score*CVS_WIDTH)
@@ -144,6 +145,11 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 		}
 		dPipeX = tempDPipeX
 
+		// Update the high score
+		if score > highScore.Get("high_score").Float() {
+			highScore.Set("high_score", score)
+		}
+
 		// Draw in the score
 		ctx.Set("font", "30px urw-form, Helvetica, sans-serif")
 		ctx.Set("fillStyle", "#ffffff")
@@ -152,7 +158,7 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 
 		// Draw in the score
 		ctx.Set("textAlign", "right")
-		ctx.Call("fillText", fmt.Sprintf("High score: %d", int(score)), 0.95*CVS_WIDTH, 0.1*CVS_HEIGHT)
+		ctx.Call("fillText", fmt.Sprintf("High score: %d", int(highScore.Get("high_score").Float())), 0.95*CVS_WIDTH, 0.1*CVS_HEIGHT)
 
 		// Draw the next frame or display lost message
 		if !exit {

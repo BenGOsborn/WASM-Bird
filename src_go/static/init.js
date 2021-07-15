@@ -7,13 +7,16 @@
     );
     go.run(result.instance);
 
+    // Inittialize the high score state
+    const highScore = { high_score: 0 }
+
     // Add an event listener for game restarts
     addEventListener("keypress", (e) => {
         if (e.code === "KeyR") {
-            WASMBird();
+            WASMBird(highScore);
         }
     });
 
     // Start the game
-    WASMBird();
+    WASMBird(highScore);
 })();

@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	PORT := ":3000"
+	PORT := ":6000"
 	FILE_DIR := "./src_go/static"
 
 	fmt.Println("Listening on http://localhost" + PORT)

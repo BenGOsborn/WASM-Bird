@@ -7,6 +7,6 @@
     );
     go.run(result.instance);
 
-    // The below code is NOT executing
+    // Start the game
     WASMBird();
 })();

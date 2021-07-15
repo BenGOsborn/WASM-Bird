@@ -5,6 +5,7 @@ import (
 	"math"
 	"math/rand"
 	"syscall/js"
+	"time"
 	"wasmBird/lib"
 )
 
@@ -143,6 +144,8 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 		// Draw in the score
 		ctx.Set("textAlign", "right")
 		ctx.Call("fillText", fmt.Sprintf("High score: %f", score), 0.95*CVS_WIDTH, 0.1*CVS_HEIGHT)
+
+		time.Sleep(time.Second)
 	}
 
 	// Display on exit

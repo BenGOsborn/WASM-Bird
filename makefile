@@ -2,20 +2,16 @@
 go-build:
 	cd src_go/wasmBird; GOOS=js GOARCH=wasm go build -o ../static/main.wasm main.go
 
-# Start the Go server
+# Start the server for the app built using WASM
 go-start:
-	go run src_go/server.go
-
-# Install the required npm packages
-js-install-dev:
-	npm --prefix src_ts install
+	npm run --prefix src_go dev
 
 # Run npm development server
-js-dev: js-install-dev
+js-dev:
 	npm run --prefix src_ts dev
 
 # Compile js app
-js-compile: js-install-dev
+js-compile:
 	npm run --prefix src_ts compile
 
 # Move the other static files into the compiled app

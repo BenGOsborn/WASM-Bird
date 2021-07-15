@@ -1,5 +1,5 @@
 {
-    "name": "wasm-bird",
+    "name": "src_ts",
     "version": "1.0.0",
     "scripts": {
         "dev": "concurrently -k \"nodemon server.ts\" \"tsc static/*.ts --watch\"",

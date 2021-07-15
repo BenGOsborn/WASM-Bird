@@ -51,12 +51,17 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 		dBirdY   float64 = CVS_WIDTH * (1.0 / 100)
 	)
 
-	// Event listener for jump
+	// Event listeners for jump
 	lib.AddEventListener("keypress", func(this js.Value, args []js.Value) interface{} {
 		code := args[0].Get("code").String()
 		if code == "Space" {
 			dBirdY = -CVS_WIDTH * (1.0 / 100)
 		}
+		return nil
+	})
+
+	lib.AddEventListener("click", func(this js.Value, args []js.Value) interface{} {
+		dBirdY = -CVS_WIDTH * (1.0 / 100)
 		return nil
 	})
 
@@ -126,18 +131,18 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 		birdY = math.Min(birdY+dBirdY, CVS_HEIGHT-birdSize)
 		dBirdY += GRAVITY
 
-		// // Speed up the game - ******* Pretty sure this is broken
-		// var tempPipeSpacing float64 = 0
-		// if score != 0 {
-		// 	tempPipeSpacing = pipeSpacing - 1.0/(score*CVS_WIDTH)
-		// }
-		// pipeSpacing = math.Max(0.3*CVS_WIDTH, float64(tempPipeSpacing))
+		// // Speed up the game
+		var tempPipeSpacing float64 = pipeSpacing
+		if score != 0 {
+			tempPipeSpacing = pipeSpacing - 1.0/(score*CVS_WIDTH)
+		}
+		pipeSpacing = math.Max(0.3*CVS_WIDTH, float64(tempPipeSpacing))
 
-		// var tempDPipeX float64 = 0
-		// if score != 0 {
-		// 	tempDPipeX = 1.0 / (score * CVS_WIDTH)
-		// }
-		// dPipeX += tempDPipeX
+		var tempDPipeX float64 = dPipeX
+		if score != 0 {
+			tempDPipeX = dPipeX + 1.0/(score*CVS_WIDTH)
+		}
+		dPipeX = tempDPipeX
 
 		// Draw in the score
 		ctx.Set("font", "30px urw-form, Helvetica, sans-serif")

@@ -14,7 +14,7 @@ type Pipe struct {
 	Scored    bool
 }
 
-func AddEventListener(eventName string, callback func(this js.Value, args []js.Value) interface{}) {
+func addEventListener(eventName string, callback func(this js.Value, args []js.Value) interface{}) {
 	js.Global().Get("document").Call("addEventListener", eventName, js.FuncOf(callback))
 }
 
@@ -63,7 +63,7 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 	)
 
 	// Event listeners for jump
-	AddEventListener("keypress", func(this js.Value, args []js.Value) interface{} {
+	addEventListener("keypress", func(this js.Value, args []js.Value) interface{} {
 		code := args[0].Get("code").String()
 		if code == "Space" {
 			dBirdY = -CVS_WIDTH * (1.0 / 100)
@@ -71,7 +71,7 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 		return nil
 	})
 
-	AddEventListener("click", func(this js.Value, args []js.Value) interface{} {
+	addEventListener("click", func(this js.Value, args []js.Value) interface{} {
 		dBirdY = -CVS_WIDTH * (1.0 / 100)
 		return nil
 	})

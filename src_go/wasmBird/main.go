@@ -1,17 +1,17 @@
 package main
 
 import (
+	"fmt"
 	"math"
 	"math/rand"
-	"strconv"
 	"syscall/js"
 	"wasmBird/lib"
 )
 
 type Pipe struct {
-	gapStart  float32
-	gapHeight float32
-	pipeX     float32
+	gapStart  float64
+	gapHeight float64
+	pipeX     float64
 	scored    bool
 }
 
@@ -25,7 +25,7 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 
 	// Initialize the values of the game
 	const SPEED = 0.5
-	score := 0
+	var score float64 = 0
 	exit := false
 	GRAVITY := CVS_WIDTH * (0.1 / 100)
 
@@ -74,10 +74,10 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 		pipes = tempPipes
 
 		// Attempt to add a new pipe
-		if len(pipes) == 0 || CVS_WIDTH-(pipes[len(pipes)-1].pipeX+pipeWidth > 0) {
+		if len(pipes) == 0 || CVS_WIDTH-(pipes[len(pipes)-1].pipeX+pipeWidth) > 0 {
 			newPipe := new(Pipe)
-			newPipe.gapStart = float32(math.Floor(rand.Float32()*(pipeMaxHeight-pipeMinHeight) + pipeMinHeight))
-			newPipe.gapHeight = float32(math.Floor(rand.Float32()*(pipeMaxGap-pipeMinGap) + pipeMinGap))
+			newPipe.gapStart = math.Floor(rand.Float64()*(pipeMaxHeight-pipeMinHeight) + pipeMinHeight)
+			newPipe.gapHeight = math.Floor(rand.Float64()*(pipeMaxGap-pipeMinGap) + pipeMinGap)
 			newPipe.pipeX = CVS_WIDTH
 			newPipe.scored = false
 			pipes = append(pipes, newPipe)
@@ -110,7 +110,7 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 
 		// Draw in the bird
 		ctx.Set("fillStyle", "#ff6600")
-		ctx.Set("fillRect", birdX, birdY, birdSize, birdSize)
+		ctx.Call("fillRect", birdX, birdY, birdSize, birdSize)
 
 		// Exit if the bird touches the ground
 		if birdY == CVS_HEIGHT-birdSize {
@@ -122,13 +122,13 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 		dBirdY += GRAVITY
 
 		// Speed up the game
-		tempPipeSpacing := 0
+		var tempPipeSpacing float64 = 0
 		if score != 0 {
 			tempPipeSpacing = pipeSpacing - 1/(score*CVS_WIDTH)
 		}
 		pipeSpacing = math.Max(0.3*CVS_WIDTH, float64(tempPipeSpacing))
 
-		tempDPipeX := 0
+		var tempDPipeX float64 = 0
 		if score != 0 {
 			tempDPipeX = 1 / (score * CVS_WIDTH)
 		}
@@ -138,11 +138,11 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 		ctx.Set("font", "30px urw-form, Helvetica, sans-serif")
 		ctx.Set("fillStyle", "#ffffff")
 		ctx.Set("textAlign", "left")
-		ctx.Call("fillText", "Score: "+strconv.Itoa(score), 0.05*CVS_WIDTH, 0.1*CVS_HEIGHT)
+		ctx.Call("fillText", fmt.Sprintf("Score: %f", score), 0.05*CVS_WIDTH, 0.1*CVS_HEIGHT)
 
 		// Draw in the score
 		ctx.Set("textAlign", "right")
-		ctx.Call("fillText", "High score: "+strconv.Itoa(score), 0.95*CVS_WIDTH, 0.1*CVS_HEIGHT)
+		ctx.Call("fillText", fmt.Sprintf("High score: %f", score), 0.95*CVS_WIDTH, 0.1*CVS_HEIGHT)
 	}
 
 	// Display on exit

@@ -146,8 +146,8 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 		dPipeX = tempDPipeX
 
 		// Update the high score
-		if score > highScore.Get("high_score").Float() {
-			highScore.Set("high_score", score)
+		if score > highScore.Get("highScore").Float() {
+			highScore.Set("highScore", score)
 		}
 
 		// Draw in the score
@@ -158,7 +158,7 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 
 		// Draw in the score
 		ctx.Set("textAlign", "right")
-		ctx.Call("fillText", fmt.Sprintf("High score: %d", int(highScore.Get("high_score").Float())), 0.95*CVS_WIDTH, 0.1*CVS_HEIGHT)
+		ctx.Call("fillText", fmt.Sprintf("High score: %d", int(highScore.Get("highScore").Float())), 0.95*CVS_WIDTH, 0.1*CVS_HEIGHT)
 
 		// Draw the next frame or display lost message
 		if !exit {

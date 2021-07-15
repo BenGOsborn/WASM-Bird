@@ -5,8 +5,18 @@ import (
 	"math"
 	"math/rand"
 	"syscall/js"
-	"wasmBird/lib"
 )
+
+type Pipe struct {
+	GapStart  float64
+	GapHeight float64
+	PipeX     float64
+	Scored    bool
+}
+
+func AddEventListener(eventName string, callback func(this js.Value, args []js.Value) interface{}) {
+	js.Global().Get("document").Call("addEventListener", eventName, js.FuncOf(callback))
+}
 
 func WASMBird(this js.Value, args []js.Value) interface{} {
 	// Initialize the canvas
@@ -42,7 +52,7 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 	)
 
 	// Store the pipes for drawing
-	var pipes []*lib.Pipe
+	var pipes []*Pipe
 
 	// Declare the values for the bird
 	var (
@@ -53,7 +63,7 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 	)
 
 	// Event listeners for jump
-	lib.AddEventListener("keypress", func(this js.Value, args []js.Value) interface{} {
+	AddEventListener("keypress", func(this js.Value, args []js.Value) interface{} {
 		code := args[0].Get("code").String()
 		if code == "Space" {
 			dBirdY = -CVS_WIDTH * (1.0 / 100)
@@ -61,7 +71,7 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 		return nil
 	})
 
-	lib.AddEventListener("click", func(this js.Value, args []js.Value) interface{} {
+	AddEventListener("click", func(this js.Value, args []js.Value) interface{} {
 		dBirdY = -CVS_WIDTH * (1.0 / 100)
 		return nil
 	})
@@ -76,7 +86,7 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 		ctx.Call("fillRect", 0, 0.9*CVS_HEIGHT, CVS_WIDTH, CVS_HEIGHT)
 
 		// Iterate over the pipes and remove the ones that are out of frame
-		tempPipes := []*lib.Pipe{}
+		tempPipes := []*Pipe{}
 		for _, pipe := range pipes {
 			if pipe.PipeX+pipeWidth > 0 {
 				tempPipes = append(tempPipes, pipe)
@@ -86,7 +96,7 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 
 		// Attempt to add a new pipe
 		if len(pipes) == 0 || CVS_WIDTH-(pipes[len(pipes)-1].PipeX+pipeWidth) > pipeSpacing {
-			newPipe := new(lib.Pipe)
+			newPipe := new(Pipe)
 			newPipe.GapStart = math.Floor(rand.Float64()*(pipeMaxHeight-pipeMinHeight) + pipeMinHeight)
 			newPipe.GapHeight = math.Floor(rand.Float64()*(pipeMaxGap-pipeMinGap) + pipeMinGap)
 			newPipe.PipeX = CVS_WIDTH

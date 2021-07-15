@@ -139,7 +139,7 @@ function WASMBird(highScore: { highScore: number }) {
         ctx.textAlign = "left";
         ctx.fillText(`Score: ${score}`, 0.05 * cvs.width, 0.1 * cvs.height);
 
-        // If the new score is higher than the max score update it and update the score on the server
+        // If the new score is higher than the high score update it and update the score on the server
         if (score > highScore.highScore) {
             highScore.highScore = score;
             fetch("/high_score", {
@@ -152,9 +152,7 @@ function WASMBird(highScore: { highScore: number }) {
             });
         }
 
-        // Draw the max score
-        ctx.font = "30px urw-form, Helvetica, sans-serif";
-        ctx.fillStyle = "white";
+        // Draw the high score
         ctx.textAlign = "right";
         ctx.fillText(
             `High score: ${highScore.highScore}`,

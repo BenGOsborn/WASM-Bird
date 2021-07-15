@@ -2,16 +2,14 @@
 # Build the WASM file
 FROM golang:latest
 WORKDIR /usr/app
-ADD wasmBird/* ./
-RUN go mod download
-# This line is broken for some reason UGH
+COPY main.go .
 RUN GOOS=js GOARCH=wasm go build -o main.wasm main.go
 
 # Stage 2
 # Build the server
 FROM node:latest
 WORKDIR /usr/app
-COPY package*.json .
+COPY package*.json ./
 RUN npm install --production
 COPY server.js .
 ADD static .
@@ -19,4 +17,5 @@ COPY --from=0 /usr/app/main.wasm static
 
 # Start the server
 EXPOSE 3000
+CMD ls
 CMD npm run start

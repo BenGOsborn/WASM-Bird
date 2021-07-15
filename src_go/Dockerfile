@@ -17,5 +17,5 @@ COPY --from=0 /usr/app/main.wasm static
 
 # Start the server
 EXPOSE 3000
-CMD ls
+RUN ls
 CMD npm run start

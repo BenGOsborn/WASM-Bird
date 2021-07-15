@@ -148,6 +148,7 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 		// Update the high score
 		if score > highScore.Get("highScore").Float() {
 			highScore.Set("highScore", score)
+			js.Global().Call("saveScore", score)
 		}
 
 		// Draw in the score

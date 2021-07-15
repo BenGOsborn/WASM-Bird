@@ -138,11 +138,11 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 		ctx.Set("font", "30px urw-form, Helvetica, sans-serif")
 		ctx.Set("fillStyle", "#ffffff")
 		ctx.Set("textAlign", "left")
-		ctx.Call("fillText", fmt.Sprintf("Score: %f", score), 0.05*CVS_WIDTH, 0.1*CVS_HEIGHT)
+		ctx.Call("fillText", fmt.Sprintf("Score: %d", int(score)), 0.05*CVS_WIDTH, 0.1*CVS_HEIGHT)
 
 		// Draw in the score
 		ctx.Set("textAlign", "right")
-		ctx.Call("fillText", fmt.Sprintf("High score: %f", score), 0.95*CVS_WIDTH, 0.1*CVS_HEIGHT)
+		ctx.Call("fillText", fmt.Sprintf("High score: %d", int(score)), 0.95*CVS_WIDTH, 0.1*CVS_HEIGHT)
 	}
 
 	// Display on exit

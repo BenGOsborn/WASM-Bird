@@ -7,6 +7,13 @@
     );
     go.run(result.instance);
 
+    // Add an event listener for game restarts
+    addEventListener("keypress", (e) => {
+        if (e.code === "KeyR") {
+            WASMBird();
+        }
+    });
+
     // Start the game
     WASMBird();
 })();

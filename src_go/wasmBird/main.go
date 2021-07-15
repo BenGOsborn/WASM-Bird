@@ -23,6 +23,9 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 	CVS_WIDTH := cvs.Get("width").Float()
 	CVS_HEIGHT := cvs.Get("height").Float()
 
+	fmt.Println(CVS_WIDTH)
+	fmt.Println(CVS_HEIGHT)
+
 	// Initialize the values of the game
 	const SPEED = 0.5
 	var score float64 = 0
@@ -58,7 +61,10 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 		return nil
 	})
 
-	for !exit {
+	// Define the function to draw the next frame
+	var drawFrame func()
+
+	drawFrame = func() {
 		ctx.Set("fillStyle", "#0099ff")
 		ctx.Call("fillRect", 0, 0, CVS_WIDTH, CVS_HEIGHT)
 		ctx.Set("fillStyle", "#ffcc00")
@@ -118,7 +124,7 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 		}
 
 		// Update the values for the bird
-		// birdY = math.Min(birdY+dBirdY, CVS_HEIGHT-birdSize)
+		birdY = math.Min(birdY+dBirdY, CVS_HEIGHT-birdSize)
 		dBirdY += GRAVITY
 
 		// Speed up the game
@@ -143,14 +149,26 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 		// Draw in the score
 		ctx.Set("textAlign", "right")
 		ctx.Call("fillText", fmt.Sprintf("High score: %d", int(score)), 0.95*CVS_WIDTH, 0.1*CVS_HEIGHT)
+
+		// Draw the next frame or display lost message
+		if !exit {
+			// Draw the next frame
+			js.Global().Call("requestAnimationFrame", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+				drawFrame()
+				return nil
+			}))
+		} else {
+			// Display on exit
+			ctx.Set("textAlign", "center")
+			ctx.Set("font", "40px urw-form, Helvetica, sans-serif")
+			ctx.Call("fillText", "You lost!", 0.5*CVS_WIDTH, 0.45*CVS_HEIGHT)
+			ctx.Set("font", "30px urw-form, Helvetica, sans-serif")
+			ctx.Call("fillText", "Press 'r' to restart", 0.5*CVS_WIDTH, 0.55*CVS_HEIGHT)
+		}
 	}
 
-	// Display on exit
-	ctx.Set("textAlign", "center")
-	ctx.Set("font", "40px urw-form, Helvetica, sans-serif")
-	ctx.Call("fillText", "You lost!", 0.5*CVS_WIDTH, 0.45*CVS_HEIGHT)
-	ctx.Set("font", "30px urw-form, Helvetica, sans-serif")
-	ctx.Call("fillText", "Press 'r' to restart", 0.5*CVS_WIDTH, 0.55*CVS_HEIGHT)
+	// I need a way of recurisvely calling the drawFrame function inside of itself so it can keep requesting animation frames
+	drawFrame()
 
 	return nil
 }

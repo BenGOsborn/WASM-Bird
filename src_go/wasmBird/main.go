@@ -8,13 +8,6 @@ import (
 	"wasmBird/lib"
 )
 
-type Pipe struct {
-	gapStart  float64
-	gapHeight float64
-	pipeX     float64
-	scored    bool
-}
-
 func WASMBird(this js.Value, args []js.Value) interface{} {
 	// Initialize the canvas
 	cvs := js.Global().Get("document").Call("getElementById", "canvas")
@@ -47,7 +40,7 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 	)
 
 	// Store the pipes for drawing
-	var pipes []*Pipe
+	var pipes []*lib.Pipe
 
 	// Declare the values for the bird
 	var (
@@ -76,21 +69,21 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 		ctx.Call("fillRect", 0, 0.9*CVS_HEIGHT, CVS_WIDTH, CVS_HEIGHT)
 
 		// Iterate over the pipes and remove the ones that are out of frame
-		tempPipes := []*Pipe{}
+		tempPipes := []*lib.Pipe{}
 		for _, pipe := range pipes {
-			if pipe.pipeX+pipeWidth > 0 {
+			if pipe.PipeX+pipeWidth > 0 {
 				tempPipes = append(tempPipes, pipe)
 			}
 		}
 		pipes = tempPipes
 
 		// Attempt to add a new pipe
-		if len(pipes) == 0 || CVS_WIDTH-(pipes[len(pipes)-1].pipeX+pipeWidth) > pipeSpacing {
-			newPipe := new(Pipe)
-			newPipe.gapStart = math.Floor(rand.Float64()*(pipeMaxHeight-pipeMinHeight) + pipeMinHeight)
-			newPipe.gapHeight = math.Floor(rand.Float64()*(pipeMaxGap-pipeMinGap) + pipeMinGap)
-			newPipe.pipeX = CVS_WIDTH
-			newPipe.scored = false
+		if len(pipes) == 0 || CVS_WIDTH-(pipes[len(pipes)-1].PipeX+pipeWidth) > pipeSpacing {
+			newPipe := new(lib.Pipe)
+			newPipe.GapStart = math.Floor(rand.Float64()*(pipeMaxHeight-pipeMinHeight) + pipeMinHeight)
+			newPipe.GapHeight = math.Floor(rand.Float64()*(pipeMaxGap-pipeMinGap) + pipeMinGap)
+			newPipe.PipeX = CVS_WIDTH
+			newPipe.Scored = false
 			pipes = append(pipes, newPipe)
 		}
 
@@ -98,25 +91,25 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 		for _, pipe := range pipes {
 			// Draw the pipe
 			ctx.Set("fillStyle", "#00cc00")
-			ctx.Call("fillRect", pipe.pipeX, 0, pipeWidth, pipe.gapStart)
-			ctx.Call("fillRect", pipe.pipeX, pipe.gapStart+pipe.gapHeight, pipeWidth, CVS_HEIGHT)
+			ctx.Call("fillRect", pipe.PipeX, 0, pipeWidth, pipe.GapStart)
+			ctx.Call("fillRect", pipe.PipeX, pipe.GapStart+pipe.GapHeight, pipeWidth, CVS_HEIGHT)
 
 			// Check if the bird is within the pipe
-			if birdX+birdSize >= pipe.pipeX && birdX <= pipe.pipeX+pipeWidth {
+			if birdX+birdSize >= pipe.PipeX && birdX <= pipe.PipeX+pipeWidth {
 				// Check if the bird has touched the pipe and stop if so
-				if birdY <= pipe.gapStart || birdY+birdSize >= pipe.gapStart+pipe.gapHeight {
+				if birdY <= pipe.GapStart || birdY+birdSize >= pipe.GapStart+pipe.GapHeight {
 					exit = true
 				}
 			}
 
 			// Attempt to increment the score
-			if !pipe.scored && pipe.pipeX+pipeWidth < birdX+birdSize {
+			if !pipe.Scored && pipe.PipeX+pipeWidth < birdX+birdSize {
 				score += 1
-				pipe.scored = true
+				pipe.Scored = true
 			}
 
 			// Move the pipe
-			pipe.pipeX -= dPipeX
+			pipe.PipeX -= dPipeX
 		}
 
 		// Draw in the bird

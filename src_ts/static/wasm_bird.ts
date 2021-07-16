@@ -3,6 +3,7 @@ function WASMBird(highScore: { highScore: number }) {
     const SPEED = 0.5;
     let score = 0;
     let exit = false;
+    const FPS = 60;
 
     // Initialize the canvas
     const cvs = document.getElementById("canvas") as HTMLCanvasElement;
@@ -44,6 +45,21 @@ function WASMBird(highScore: { highScore: number }) {
             dBirdY = -cvs.width * (1 / 100);
         }
     });
+
+    // Run on exit
+    function onExit() {
+        // Display an exit message on the screen
+        ctx.font = "40px urw-form, Helvetica, sans-serif";
+        ctx.fillStyle = "white";
+        ctx.textAlign = "center";
+        ctx.fillText("You lost!", 0.5 * cvs.width, 0.45 * cvs.height);
+        ctx.font = "30px urw-form, Helvetica, sans-serif";
+        ctx.fillText(
+            "Press 'r' to restart",
+            0.5 * cvs.width,
+            0.55 * cvs.height
+        );
+    }
 
     // Main draw loop
     function draw() {
@@ -160,26 +176,13 @@ function WASMBird(highScore: { highScore: number }) {
             0.1 * cvs.height
         );
 
-        // Draw the next frame if the game is still running
-        if (!exit) requestAnimationFrame(draw);
-        else onExit();
+        // Draw the next frame if the game is still running after a delay
+        setTimeout(() => {
+            if (!exit) requestAnimationFrame(draw);
+            else onExit();
+        }, 1000 / FPS)
     }
 
     // Start the event loop
     draw();
-
-    // Run on exit
-    function onExit() {
-        // Display an exit message on the screen
-        ctx.font = "40px urw-form, Helvetica, sans-serif";
-        ctx.fillStyle = "white";
-        ctx.textAlign = "center";
-        ctx.fillText("You lost!", 0.5 * cvs.width, 0.45 * cvs.height);
-        ctx.font = "30px urw-form, Helvetica, sans-serif";
-        ctx.fillText(
-            "Press 'r' to restart",
-            0.5 * cvs.width,
-            0.55 * cvs.height
-        );
-    }
 }

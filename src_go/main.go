@@ -29,7 +29,8 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 	)
 
 	// Initialize the values of the game
-	const SPEED = 0.5
+	const SPEED float64 = 0.5
+	const FPS float64 = 60
 	var (
 		highScore js.Value = args[0]
 		score     float64  = 0
@@ -49,7 +50,7 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 	// Adjust according to a logarithmic scale
 	var (
 		pipeSpacing float64 = 0.5 * CVS_WIDTH
-		dPipeX      float64 = CVS_WIDTH * (float64(SPEED) / 100)
+		dPipeX      float64 = CVS_WIDTH * (SPEED / 100)
 	)
 
 	// Store the pipes for drawing
@@ -148,7 +149,7 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 		if score != 0 {
 			tempPipeSpacing = pipeSpacing - 1.0/(score*CVS_WIDTH)
 		}
-		pipeSpacing = math.Max(0.3*CVS_WIDTH, float64(tempPipeSpacing))
+		pipeSpacing = math.Max(0.3*CVS_WIDTH, tempPipeSpacing)
 
 		var tempDPipeX float64 = dPipeX
 		if score != 0 {
@@ -172,21 +173,25 @@ func WASMBird(this js.Value, args []js.Value) interface{} {
 		ctx.Set("textAlign", "right")
 		ctx.Call("fillText", fmt.Sprintf("High score: %d", int(highScore.Get("highScore").Float())), 0.95*CVS_WIDTH, 0.1*CVS_HEIGHT)
 
-		// Draw the next frame or display lost message
-		if !exit {
-			// Draw the next frame
-			js.Global().Call("requestAnimationFrame", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-				drawFrame()
-				return nil
-			}))
-		} else {
-			// Display on exit
-			ctx.Set("textAlign", "center")
-			ctx.Set("font", "40px urw-form, Helvetica, sans-serif")
-			ctx.Call("fillText", "You lost!", 0.5*CVS_WIDTH, 0.45*CVS_HEIGHT)
-			ctx.Set("font", "30px urw-form, Helvetica, sans-serif")
-			ctx.Call("fillText", "Press 'r' to restart", 0.5*CVS_WIDTH, 0.55*CVS_HEIGHT)
-		}
+		// Draw the next frame or display lost message after a delay
+		js.Global().Call("setTimeout", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+			if !exit {
+				// Draw the next frame
+				js.Global().Call("requestAnimationFrame", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+					drawFrame()
+					return nil
+				}))
+			} else {
+				// Display on exit
+				ctx.Set("textAlign", "center")
+				ctx.Set("font", "40px urw-form, Helvetica, sans-serif")
+				ctx.Call("fillText", "You lost!", 0.5*CVS_WIDTH, 0.45*CVS_HEIGHT)
+				ctx.Set("font", "30px urw-form, Helvetica, sans-serif")
+				ctx.Call("fillText", "Press 'r' to restart", 0.5*CVS_WIDTH, 0.55*CVS_HEIGHT)
+			}
+
+			return nil
+		}), 1000.0/FPS)
 	}
 
 	// I need a way of recurisvely calling the drawFrame function inside of itself so it can keep requesting animation frames

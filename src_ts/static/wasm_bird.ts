@@ -46,6 +46,21 @@ function WASMBird(highScore: { highScore: number }) {
         }
     });
 
+    // Run on exit
+    function onExit() {
+        // Display an exit message on the screen
+        ctx.font = "40px urw-form, Helvetica, sans-serif";
+        ctx.fillStyle = "white";
+        ctx.textAlign = "center";
+        ctx.fillText("You lost!", 0.5 * cvs.width, 0.45 * cvs.height);
+        ctx.font = "30px urw-form, Helvetica, sans-serif";
+        ctx.fillText(
+            "Press 'r' to restart",
+            0.5 * cvs.width,
+            0.55 * cvs.height
+        );
+    }
+
     // Main draw loop
     function draw() {
         // Initialize the background
@@ -170,19 +185,4 @@ function WASMBird(highScore: { highScore: number }) {
 
     // Start the event loop
     draw();
-
-    // Run on exit
-    function onExit() {
-        // Display an exit message on the screen
-        ctx.font = "40px urw-form, Helvetica, sans-serif";
-        ctx.fillStyle = "white";
-        ctx.textAlign = "center";
-        ctx.fillText("You lost!", 0.5 * cvs.width, 0.45 * cvs.height);
-        ctx.font = "30px urw-form, Helvetica, sans-serif";
-        ctx.fillText(
-            "Press 'r' to restart",
-            0.5 * cvs.width,
-            0.55 * cvs.height
-        );
-    }
 }

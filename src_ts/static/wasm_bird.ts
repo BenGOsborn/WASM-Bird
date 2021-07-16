@@ -161,7 +161,7 @@ function WASMBird(highScore: { highScore: number }) {
             0.1 * cvs.height
         );
 
-        // Draw the next frame if the game is still running
+        // Draw the next frame if the game is still running after a delay
         setTimeout(() => {
             if (!exit) requestAnimationFrame(draw);
             else onExit();

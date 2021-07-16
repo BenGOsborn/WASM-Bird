@@ -9,7 +9,7 @@ go-install:
 	npm install --prefix src_go
 
 # Start the server for the app built using WASM
-go-dev: go-install
+go-dev: go-install go-compile
 	npm run --prefix src_go dev
 
 # Build the Go app Docker image

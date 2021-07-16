@@ -41,7 +41,7 @@ For both apps, the static files are served using a NodeJS + ExpressJS server, wh
 
 Although no benchmarks have been run on the two apps, it feels like the WASM version of the app is slower than the regular TypeScript version. Perhaps this is because it is computationally expensive to interact with JS from WASM, although I have done no research into whether this is the case or not. It is also more difficult to build an app using pure WASM. Overall it is my recommendation that WASM should be used as a supplement to JS, where computationally expensive tasks that require little interaction with the JS DOM can be offloaded to WASM.
 
-## Todo
+#### Todo
 
 -   MAYBE add webpack for the TS
 -   WebGL with WASM might be interesting (my own game engine + visualizing algorithms)

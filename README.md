@@ -18,16 +18,16 @@ NOTE: If you are building using Docker, ignore the following requirements. If yo
 DOCKER:
 
 -   TypeScript version
-    -   make ts-run
+    -   <code>make ts-run</code>
 -   Golang version
-    -   make go-run
+    -   <code>make go-run</code>
 
 NO DOCKER (DEV ONLY):
 
 -   TypeScript version
-    -   make ts-dev
+    -   <code>make ts-dev</code>
 -   Golang version
-    -   make go-dev
+    -   <code>make go-dev</code>
 
 ### How it was built
 

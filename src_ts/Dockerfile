@@ -20,5 +20,4 @@ COPY static/index.html ./dist/static
 COPY static/styles.css ./dist/static
 
 # Start the server
-EXPOSE 3000
 CMD npm run start

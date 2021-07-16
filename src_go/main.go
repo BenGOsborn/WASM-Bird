@@ -15,6 +15,7 @@ type Pipe struct {
 }
 
 func addEventListener(eventName string, callback func(this js.Value, args []js.Value) interface{}) {
+	// Add a global event listener
 	js.Global().Get("document").Call("addEventListener", eventName, js.FuncOf(callback))
 }
 

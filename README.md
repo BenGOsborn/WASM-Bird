@@ -33,7 +33,7 @@ NO DOCKER (DEV ONLY):
 
 The repository features two versions of the same app, where one version is built in TypeScript, and the other is built using Golang and WASM. The project was first built in TypeScript for convenience when designing the app, and was then translated into its Golang counterpart as an experiment and learning excercise for WASM.
 
-Both apps interact with a simple HTML canvas for displaying the app, the only difference between the two is the languages they will built in. Apart from a few event listeners written in JS to restart the game on exit, the rest of the game logic for the WASM app is built entirely using Golang. It interacts with the Canvas using the <code>syscall/js</code> library, which allows Go to interact with the JS DOM. This allows Go to do things such as interacting with Javascript objects, draw on the canvas, add event listeners, and even set timeouts.
+Both apps interact with a simple HTML canvas for displaying the app, the only difference between the two is the languages they will built in. Apart from a few event listeners written in JS to restart the game on exit, the rest of the game logic for the WASM app is built entirely using Golang. It interacts with the Canvas using the <code>syscall/js</code> package, which allows Go to interact with the JS DOM. This allows Go to do things such as interacting with Javascript objects, draw on the canvas, add event listeners, and even set timeouts.
 
 For both apps, the static files are served using a NodeJS + ExpressJS server, which is able to serve .wasm files. Both apps are also containerized using Docker for portability. A [demo](https://wasm-bird.herokuapp.com/) of the project has been deployed to Heroku.
 

@@ -1,3 +1,5 @@
+# --------------------- Go app -------------------------
+
 # Compile Go to WASM
 go-compile:
 	cd src_go/; GOOS=js GOARCH=wasm go build -o static/main.wasm main.go
@@ -10,20 +12,20 @@ go-dev:
 go-build:
 	docker build -t bengosborn/go-wasmbird src_go
 
-# Run the Go app docker Image
+# Run the Go app Docker image
 go-run: go-build
 	docker run -dp 3000:3000 bengosborn/go-wasmbird:latest
 
+# --------------------- TS app -------------------------
+
 # Run npm development server
-js-dev:
+ts-dev:
 	npm run --prefix src_ts dev
 
-# I will not need these build commands after this - just use Docker
+# Build the TS Docker image
+ts-build:
+	docker build -t bengosborn/ts-wasmbird src_ts
 
-# Compile js app
-js-compile:
-	npm run --prefix src_ts build
-
-# Move the other static files into the compiled app
-js-build: js-compile
-	find . -wholename './src_ts/static/*' -not -wholename './src_ts/static/*.js' -not -wholename './src_ts/static/*.ts' -exec cp -t src_ts/dist/static {} +
+# Run the TS Docker image
+ts-run: ts-build
+	docker run -dp 3000:3000 bengosborn/ts-wasmbird:latest

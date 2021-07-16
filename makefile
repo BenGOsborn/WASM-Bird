@@ -4,8 +4,12 @@
 go-compile:
 	cd src_go/; GOOS=js GOARCH=wasm go build -o static/main.wasm main.go
 
+# Install npm dependencies
+go-install:
+	npm install --prefix src_go
+
 # Start the server for the app built using WASM
-go-dev:
+go-dev: go-install
 	npm run --prefix src_go dev
 
 # Build the Go app Docker image
@@ -18,8 +22,12 @@ go-run: go-build
 
 # --------------------- TS app -------------------------
 
+# Install npm dependencies
+ts-install:
+	npm install --prefix src_ts
+
 # Run npm development server
-ts-dev:
+ts-dev: ts-install
 	npm run --prefix src_ts dev
 
 # Build the TS Docker image

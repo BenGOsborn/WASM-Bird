@@ -12,11 +12,9 @@ WORKDIR /usr/app
 COPY package*.json ./
 RUN npm install --production
 COPY server.js .
-WORKDIR /usr/app/static
-ADD static .
-COPY --from=0 /usr/app/main.wasm .
+ADD static ./static
+COPY --from=0 /usr/app/main.wasm ./static
 
 # Start the server
-WORKDIR /usr/app
 EXPOSE 3000
 CMD npm run start

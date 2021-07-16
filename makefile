@@ -1,4 +1,4 @@
-# Compile golang to WASM
+# Compile Go to WASM
 go-compile:
 	cd src_go/; GOOS=js GOARCH=wasm go build -o static/main.wasm main.go
 
@@ -18,9 +18,11 @@ go-run: go-build
 js-dev:
 	npm run --prefix src_ts dev
 
+# I will not need these build commands after this - just use Docker
+
 # Compile js app
 js-compile:
-	npm run --prefix src_ts compile
+	npm run --prefix src_ts build
 
 # Move the other static files into the compiled app
 js-build: js-compile

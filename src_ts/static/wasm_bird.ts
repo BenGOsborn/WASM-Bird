@@ -3,6 +3,7 @@ function WASMBird(highScore: { highScore: number }) {
     const SPEED = 0.5;
     let score = 0;
     let exit = false;
+    const FPS = 60;
 
     // Initialize the canvas
     const cvs = document.getElementById("canvas") as HTMLCanvasElement;
@@ -161,8 +162,10 @@ function WASMBird(highScore: { highScore: number }) {
         );
 
         // Draw the next frame if the game is still running
-        if (!exit) requestAnimationFrame(draw);
-        else onExit();
+        setTimeout(() => {
+            if (!exit) requestAnimationFrame(draw);
+            else onExit();
+        }, 1000 / FPS)
     }
 
     // Start the event loop

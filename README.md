@@ -6,10 +6,10 @@
 
 -   Docker
 
-NOTE: If you are building using Docker, ignore the following requirements
+NOTE: If you are building using Docker, ignore the following requirements. If you are not, then ignore the above requirements.
 
 -   NodeJS v10.19.0
--   Golang v1.16.5
+-   Golang v1.16.5 (Golang version only)
 
 ### Instructions
 
